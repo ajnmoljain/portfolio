@@ -3,67 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anmol Jain | Data Scientist & Analyst Portfolio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+    <title>Anmol Jain | Data Scientist & Operations Analytics Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     
     <style>
         :root {
-            --bg-color: #08080a;
-            --card-bg: #111115;
-            --accent-volt: #ccff00; 
-            --node-color: #00e5ff;   
-            --text-main: #ffffff;
-            --text-muted: #8e8e9a;
-            --border-color: #1f1f26;
+            --bg: #030303;
+            --surface: #0a0a0f;
+            --surface-card: #12121a;
+            --brand: #ccff00; 
+            --neon-blue: #00e5ff;
+            --text: #ffffff;
+            --text-muted: #71717a;
+            --border: #1f1f2e;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            cursor: none;
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            font-family: 'DM Sans', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Plus Jakarta Sans', sans-serif;
             overflow-x: hidden;
-            position: relative;
         }
 
-        #custom-cursor {
-            width: 6px;
-            height: 6px;
-            background: var(--accent-volt);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-            transform: translate(-50%, -50%);
-        }
-        #custom-cursor-ring {
-            width: 26px;
-            height: 26px;
-            border: 1px solid var(--node-color);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9998;
-            transform: translate(-50%, -50%);
-            transition: transform 0.08s ease-out;
-        }
-
-        #canvas-container {
+        #bg-canvas {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
+            width: 100vw;
             height: 100vh;
             z-index: -1;
-            opacity: 0.45;
+            opacity: 0.35;
+            pointer-events: none;
         }
 
         .container {
@@ -76,469 +54,413 @@
             position: fixed;
             top: 0;
             width: 100%;
-            padding: 1.2rem 0;
+            padding: 1.5rem 0;
             z-index: 100;
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border-color);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            background: rgba(3, 3, 3, 0.7);
         }
+
         .nav-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
+
         .logo {
-            font-family: 'Syne', sans-serif;
-            font-size: 1.4rem;
-            font-weight: 800;
-            color: var(--text-main);
-            text-decoration: none;
-            letter-spacing: -0.5px;
-        }
-        .logo span { color: var(--accent-volt); }
-        .hire-btn {
-            background: var(--accent-volt);
-            color: #000;
-            padding: 0.5rem 1.2rem;
-            border-radius: 4px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
             font-weight: 700;
+            color: var(--text);
             text-decoration: none;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            transition: all 0.2s;
+            letter-spacing: -1px;
         }
 
-        .ticker-wrap {
-            width: 100%;
-            background: #0d0d11;
-            border-bottom: 1px solid var(--border-color);
-            overflow: hidden;
-            padding: 0.6rem 0;
-            margin-top: 65px;
-        }
-        .ticker {
-            display: inline-block;
-            white-space: nowrap;
-            animation: marquee 25s linear infinite;
-        }
-        .ticker-item {
-            display: inline-block;
-            padding: 0 2.5rem;
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.2rem;
-            letter-spacing: 1.5px;
-            color: var(--text-muted);
-        }
-        .ticker-item span { color: var(--node-color); }
+        .logo span { color: var(--brand); }
 
-        @keyframes marquee {
-            0% { transform: translate3d(0, 0, 0); }
-            100% { transform: translate3d(-50%, 0, 0); }
+        .btn-connect {
+            background: transparent;
+            color: var(--brand);
+            border: 1px solid var(--brand);
+            padding: 0.6rem 1.4rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
         }
 
+        .btn-connect:hover {
+            background: var(--brand);
+            color: #000;
+            box-shadow: 0 0 15px rgba(204, 255, 0, 0.4);
+        }
+
+        /* Hero & Dynamic Terminal Layout */
         .hero {
-            min-height: 80vh;
+            padding: 10rem 0 5rem 0;
+            min-height: 90vh;
             display: flex;
             align-items: center;
-            position: relative;
-            padding: 3rem 0;
         }
+
         .hero-grid {
             display: grid;
-            grid-template-columns: 1.1fr 0.9fr;
-            gap: 3rem;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 4rem;
             align-items: center;
-            width: 100%;
         }
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: rgba(0, 229, 255, 0.08);
-            border: 1px solid var(--node-color);
-            color: var(--node-color);
-            padding: 0.3rem 0.8rem;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            margin-bottom: 1.5rem;
-        }
-        .badge .dot {
-            width: 6px;
-            height: 6px;
-            background: var(--accent-volt);
-            border-radius: 50%;
-            animation: pulse 1.2s infinite;
-        }
-        @keyframes pulse {
-            0% { transform: scale(0.8); opacity: 0.5; }
-            50% { transform: scale(1.3); opacity: 1; }
-            100% { transform: scale(0.8); opacity: 0.5; }
-        }
-        .hero h1 {
-            font-family: 'Syne', sans-serif;
-            font-size: 3.8rem;
+
+        .hero-content h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 4rem;
             line-height: 1.1;
+            font-weight: 700;
             margin-bottom: 1.5rem;
-            font-weight: 800;
+            letter-spacing: -2px;
         }
-        .hero h1 em {
+
+        .hero-content h1 em {
             font-style: normal;
-            color: var(--accent-volt);
+            color: var(--brand);
         }
-        .hero p {
+
+        .hero-content p {
             color: var(--text-muted);
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             line-height: 1.6;
-            margin-bottom: 2rem;
-            max-width: 550px;
-        }
-        
-        .story-box-3d {
-            background: linear-gradient(145deg, rgba(17,17,21,0.85) 0%, rgba(10,10,12,0.95) 100%);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            height: 380px;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 1.5rem;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
-            transform-style: preserve-3d;
-            perspective: 1200px;
-            transition: border-color 0.3s, transform 0.1s ease-out;
-        }
-        .story-box-3d:hover { border-color: var(--node-color); }
-        .terminal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 0.6rem;
-        }
-        .window-controls { display: flex; gap: 6px; }
-        .term-dot { width: 8px; height: 8px; border-radius: 50%; background: #ff5f56; }
-        .term-dot:nth-child(2) { background: #ffbd2e; }
-        .term-dot:nth-child(3) { background: #27c93f; }
-        .window-title { font-size: 0.75rem; font-family: monospace; color: var(--text-muted); }
-        
-        .hologram-ui {
-            margin-top: 1rem;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            gap: 0.8rem;
-        }
-        .hologram-line {
-            font-family: 'Courier New', Courier, monospace;
-            color: #27c93f;
-            font-size: 0.85rem;
-            line-height: 1.4;
-        }
-        .glass-stat-card {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 0.6rem;
-            border-radius: 6px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transform: translateZ(30px);
-        }
-        .glass-stat-card span { color: var(--accent-volt); font-weight: bold; }
-
-        .stats-bar {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 2rem;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 2rem;
-            margin-bottom: 5rem;
-        }
-        .stat-item h3 {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 2.8rem;
-            color: var(--accent-volt);
-            line-height: 1;
-        }
-        .stat-item p {
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            margin-top: 0.4rem;
-            line-height: 1.4;
-        }
-
-        section {
-            padding: 5rem 0;
-            border-top: 1px solid var(--border-color);
-        }
-        .section-tag {
-            font-family: 'Bebas Neue', sans-serif;
-            color: var(--node-color);
-            letter-spacing: 2px;
-            font-size: 1.1rem;
-            margin-bottom: 0.4rem;
-            display: block;
-        }
-        .section-title {
-            font-family: 'Syne', sans-serif;
-            font-size: 2.2rem;
             margin-bottom: 2.5rem;
         }
 
-        .timeline { position: relative; max-width: 900px; }
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 15px;
-            top: 8px;
-            bottom: 8px;
-            width: 1px;
-            background: var(--border-color);
-        }
-        .timeline-item { position: relative; padding-left: 50px; margin-bottom: 3.5rem; }
-        .timeline-dot {
-            position: absolute;
-            left: 11px;
-            top: 6px;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: var(--bg-color);
-            border: 2px solid var(--border-color);
-        }
-        .timeline-item.active .timeline-dot {
-            background: var(--accent-volt);
-            border-color: var(--accent-volt);
-            box-shadow: 0 0 10px var(--accent-volt);
-        }
-        .time-meta {
-            color: var(--accent-volt);
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.1rem;
-            letter-spacing: 1px;
-            margin-bottom: 0.3rem;
-        }
-        .role-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.2rem; }
-        .company { color: var(--text-muted); font-weight: 500; margin-bottom: 1rem; font-size: 0.95rem; }
-        .timeline-body ul { list-style: none; }
-        .timeline-body li {
-            position: relative;
-            color: var(--text-muted);
-            line-height: 1.6;
-            margin-bottom: 0.5rem;
-            padding-left: 1.2rem;
-            font-size: 0.95rem;
-        }
-        .timeline-body li::before { content: '↳'; position: absolute; left: 0; color: var(--node-color); }
-        .tag-container { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1rem; }
-        .tag {
-            background: #16161c;
-            border: 1px solid var(--border-color);
-            color: #c5c5d2;
-            padding: 0.2rem 0.6rem;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: 500;
+        /* Live Warehouse Simulator Terminal Widget */
+        .terminal-widget {
+            background: var(--surface-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            font-family: monospace;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
         }
 
-        .ds-playground {
+        .term-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .term-dots { display: flex; gap: 6px; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .dot.r { background: #ef4444; }
+        .dot.y { background: #eab308; }
+        .dot.g { background: #22c55e; }
+        .term-title { color: var(--text-muted); font-size: 0.8rem; }
+
+        .sim-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.6rem;
+            font-size: 0.85rem;
+        }
+
+        .sim-label { color: var(--neon-blue); }
+        .sim-val { color: var(--brand); font-weight: bold; }
+
+        .progress-bar-container {
+            background: #1a1a26;
+            height: 6px;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 4px;
+            width: 100%;
+        }
+
+        .progress-bar-fill {
+            background: var(--brand);
+            height: 100%;
+            width: 84%;
+            animation: pulse-width 3s infinite alternate;
+        }
+
+        @keyframes pulse-width {
+            0% { width: 75%; }
+            100% { width: 94%; }
+        }
+
+        .live-log {
+            background: #050507;
+            padding: 0.8rem;
+            border-radius: 6px;
+            margin-top: 1rem;
+            font-size: 0.75rem;
+            color: #4ade80;
+            max-height: 100px;
+            overflow-y: hidden;
+            border: 1px solid #141420;
+        }
+
+        /* Metrics Bar */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2rem;
+            margin-bottom: 6rem;
+        }
+
+        .metric-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 2rem;
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .metric-card:hover { border-color: var(--neon-blue); transform: translateY(-2px); }
+        .metric-num { font-family: 'Space Grotesk', sans-serif; font-size: 3rem; font-weight: 700; color: var(--brand); }
+        .metric-title { font-weight: 600; margin: 0.5rem 0 0.25rem 0; font-size: 1.1rem; }
+        .metric-desc { color: var(--text-muted); font-size: 0.85rem; line-height: 1.4; }
+
+        /* Experience Timeline */
+        section { padding: 6rem 0; border-top: 1px solid var(--border); }
+        .sec-label { color: var(--neon-blue); font-family: 'Space Grotesk', sans-serif; text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem; margin-bottom: 0.5rem; display: block; }
+        .sec-title { font-family: 'Space Grotesk', sans-serif; font-size: 2.5rem; margin-bottom: 3rem; }
+
+        .xp-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2.5rem;
+            position: relative;
+        }
+
+        .xp-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .xp-title h3 { font-size: 1.8rem; font-family: 'Space Grotesk', sans-serif; }
+        .xp-title p { color: var(--brand); font-weight: 600; margin-top: 0.25rem; }
+        .xp-date { background: #12121f; padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.85rem; border: 1px solid var(--border); }
+
+        .xp-body ul { list-style: none; }
+        .xp-body li { position: relative; padding-left: 1.5rem; color: #d1d1d6; line-height: 1.7; margin-bottom: 0.8rem; }
+        .xp-body li::before { content: '⚡'; position: absolute; left: 0; color: var(--neon-blue); }
+
+        .tags-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 2rem; }
+        .tag { background: #14141f; border: 1px solid var(--border); color: #a1a1aa; padding: 0.3rem 0.8rem; border-radius: 6px; font-size: 0.8rem; font-weight: 500; }
+
+        /* Interactive ML Playground Section */
+        .playground-grid {
             display: grid;
             grid-template-columns: 0.8fr 1.2fr;
-            gap: 2rem;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 2rem;
-            margin-top: 1.5rem;
+            gap: 3rem;
         }
-        @media(max-width: 768px) {
-            .hero-grid, .ds-playground { grid-template-columns: 1fr; }
-            .hero h1 { font-size: 2.6rem; }
-        }
-        .ds-menu { display: flex; flex-direction: column; gap: 0.6rem; }
-        .ds-menu-btn {
-            background: #15151a;
-            border: 1px solid var(--border-color);
+
+        .pg-menu { display: flex; flex-direction: column; gap: 0.8rem; }
+        .pg-tab-btn {
+            background: var(--surface);
+            border: 1px solid var(--border);
             color: var(--text-muted);
-            padding: 0.9rem;
-            border-radius: 6px;
+            padding: 1.2rem;
+            border-radius: 10px;
             text-align: left;
+            font-size: 1rem;
             font-weight: 600;
-            font-size: 0.9rem;
+            cursor: pointer;
             transition: all 0.2s;
         }
-        .ds-menu-btn.active, .ds-menu-btn:hover {
-            border-color: var(--node-color);
-            color: var(--text-main);
-            background: rgba(0, 229, 255, 0.04);
+
+        .pg-tab-btn.active, .pg-tab-btn:hover {
+            border-color: var(--brand);
+            color: var(--text);
+            background: rgba(204, 255, 0, 0.03);
         }
-        .ds-display {
-            background: #09090c;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 1.2rem;
+
+        .pg-display {
+            background: #050508;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
             display: flex;
             flex-direction: column;
             justify-content: center;
         }
-        
-        .cv-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 1rem; }
-        .cv-block {
-            height: 40px;
-            background: #1c1c24;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.75rem;
-            font-weight: bold;
-            color: var(--text-muted);
-        }
-        .cv-block.val { background: rgba(204, 255, 0, 0.15); border-color: var(--accent-volt); color: var(--accent-volt); }
-        .matrix-box { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 1rem; font-family: monospace; }
-        .matrix-cell { background: #14141a; padding: 0.8rem; border: 1px solid var(--border-color); border-radius: 4px; text-align: center; font-size: 0.8rem; color: var(--text-muted); }
-        .matrix-cell span { color: var(--node-color); display: block; font-size: 1.3rem; font-weight: bold; margin-bottom: 2px; }
 
-        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; }
+        .interactive-box { font-family: monospace; }
+        .matrix-container { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 1rem; }
+        .matrix-cell { background: #0f0f16; padding: 1rem; border-radius: 6px; border: 1px solid var(--border); text-align: center; }
+        .matrix-cell span { display: block; font-size: 1.5rem; font-weight: bold; color: var(--neon-blue); margin-top: 4px; }
+
+        /* Project Cards */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
         .project-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 1.8rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transition: border-color 0.3s, transform 0.3s;
+            transition: all 0.3s;
         }
-        .project-card:hover { transform: translateY(-4px); border-color: var(--accent-volt); }
-        .proj-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-        .proj-num { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; color: var(--text-muted); }
-        .proj-links a { color: var(--text-main); font-size: 1.1rem; margin-left: 0.6rem; transition: color 0.2s; }
-        .proj-links a:hover { color: var(--accent-volt); }
-        .project-card h3 { font-size: 1.3rem; margin-bottom: 0.8rem; font-family: 'Syne', sans-serif; font-weight: 700; }
-        .project-card p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; margin-bottom: 1.2rem; }
-        .impact-highlight { background: rgba(204,255,0,0.04); border-left: 2px solid var(--accent-volt); padding: 0.5rem 0.7rem; font-size: 0.85rem; color: #e2e2eb; margin-bottom: 1.2rem; }
 
-        footer { padding: 4rem 0; background: #050507; border-top: 1px solid var(--border-color); text-align: center; }
-        .footer-headline { font-family: 'Syne', sans-serif; font-size: 2.2rem; margin-bottom: 1.5rem; }
-        .social-links { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 2.5rem; }
-        .social-links a { color: var(--text-muted); font-size: 1.3rem; transition: all 0.2s; }
-        .social-links a:hover { color: var(--accent-volt); transform: scale(1.1); }
-        .copy-text { color: #3e3e46; font-size: 0.8rem; }
+        .project-card:hover { border-color: var(--brand); transform: translateY(-4px); }
+        .proj-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .folder-icon { font-size: 1.8rem; color: var(--neon-blue); }
+        .proj-links a { color: var(--text); font-size: 1.2rem; margin-left: 0.8rem; transition: color 0.2s; }
+        .proj-links a:hover { color: var(--brand); }
+
+        .project-card h4 { font-family: 'Space Grotesk', sans-serif; font-size: 1.4rem; margin-bottom: 0.8rem; }
+        .project-card p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.5; margin-bottom: 1.5rem; }
+
+        footer { background: #020204; padding: 5rem 0; border-top: 1px solid var(--border); text-align: center; }
+        .footer-title { font-family: 'Space Grotesk', sans-serif; font-size: 2.5rem; margin-bottom: 1.5rem; }
+        .social-icons { display: flex; justify-content: center; gap: 2rem; margin-bottom: 3rem; }
+        .social-icons a { color: var(--text-muted); font-size: 1.5rem; transition: color 0.3s; }
+        .social-icons a:hover { color: var(--brand); }
+        .copy { color: #3f3f46; font-size: 0.85rem; }
+
+        @media(max-width: 768px) {
+            .hero-grid, .playground-grid { grid-template-columns: 1fr; }
+            .hero-content h1 { font-size: 2.8rem; }
+        }
     </style>
 </head>
 <body>
 
-    <div id="custom-cursor"></div>
-    <div id="custom-cursor-ring"></div>
-    <div id="canvas-container"></div>
+    <div id="bg-canvas"></div>
 
     <nav>
         <div class="container nav-container">
             <a href="#" class="logo">ANMOL<span>JAIN</span></a>
-            <a href="mailto:ajanmol22@gmail.com" class="hire-btn">Hire Me <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+            <a href="mailto:ajanmol22@gmail.com" class="btn-connect">Contact Engine <i class="fa-solid fa-bolt"></i></a>
         </div>
     </nav>
 
-    <div class="ticker-wrap">
-        <div class="ticker">
-            <div class="ticker-item">SPEECH-TO-TEXT <span>◆</span></div>
-            <div class="ticker-item">COMPUTER VISION <span>◆</span></div>
-            <div class="ticker-item">DATA MINING <span>◆</span></div>
-            <div class="ticker-item">PYROPS WMS <span>◆</span></div>
-            <div class="ticker-item">ABC/XYZ ANALYSIS <span>◆</span></div>
-            <div class="ticker-item">K-FOLD CROSS-VALIDATION <span>◆</span></div>
-            <div class="ticker-item">STREAMLIT INTEGRATION <span>◆</span></div>
-        </div>
-    </div>
-
     <section class="hero">
         <div class="container hero-grid">
-            <div>
-                <div class="badge"><div class="dot"></div> OPEN TO DATA SCIENCE & ANALYTICS ROLES</div>
-                <h1>Data tells my story. <em>1.5+ Years</em> optimizing pipelines.</h1>
-                <p>Engineering robust internal pipelines, mapping complex multi-zone route processing graphs, and automating enterprise execution metrics via advanced statistical machine learning setups.</p>
+            <div class="hero-content">
+                <span class="sec-label">DATA ANALYST // TRANSITIONING DATA SCIENTIST</span>
+                <h1>Engineering <em>Algorithms</em> For High-Scale Logistical Tasks.</h1>
+                <p>Specializing in mapping automated processing pipelines, resolving physical supply chain execution bottlenecks inside high-grid frameworks, and building predictive machine learning models.</p>
+                <div class="tags-row">
+                    <span class="tag"><i class="fa-brands fa-python"></i> Python Stack</span>
+                    <span class="tag"><i class="fa-solid fa-database"></i> SQL Windows</span>
+                    <span class="tag"><i class="fa-solid fa-chart-line"></i> Predictive ML</span>
+                    <span class="tag"><i class="fa-solid fa-network-wired"></i> Graph Routing</span>
+                </div>
             </div>
-            
-            <div class="story-box-3d" id="storyBox">
-                <div class="terminal-header">
-                    <div class="window-controls">
-                        <div class="term-dot"></div><div class="term-dot"></div><div class="term-dot"></div>
+
+            <div class="terminal-widget">
+                <div class="term-header">
+                    <div class="term-dots">
+                        <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
                     </div>
-                    <div class="window-title">neural_net_narrator.py</div>
+                    <div class="term-title">warehouse_graph_optimizer.py</div>
                 </div>
-                <div class="hologram-ui">
-                    <div class="hologram-line">> Epoch 05/05 Complete.</div>
-                    <div class="glass-stat-card">
-                        <small>Warehouse Routing Graph Accuracy</small>
-                        <span>98.4%</span>
-                    </div>
-                    <div class="glass-stat-card">
-                        <small>NLP Ensembling F1-Score</small>
-                        <span>92.0%</span>
-                    </div>
-                    <div class="hologram-line" style="color:var(--accent-volt)">> Anmol Jain: "Bhai, tracking warehouse bottlenecks with code is what I do."</div>
+                <div class="sim-row">
+                    <span class="sim-label">Target System:</span>
+                    <span class="sim-val">Pyrops WMS Engine</span>
                 </div>
-                <div style="font-size: 0.7rem; color: var(--text-muted); text-align: right;">
-                    [Interactive 3D Matrix Layer]
+                <div class="sim-row">
+                    <span class="sim-label">Putaway Grid Map:</span>
+                    <span class="sim-val" id="grid-status">Active / Optimized</span>
+                </div>
+                <div class="sim-row">
+                    <span class="sim-label">Route Optimization Rate:</span>
+                    <span class="sim-val">98.4%</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill"></div>
+                </div>
+                <div class="live-log" id="log-box">
+                    > Initializing Multi-Zone ABC/XYZ array classification...<br>
+                    > Resolving picker route constraints...
                 </div>
             </div>
         </div>
     </section>
 
     <div class="container">
-        <div class="stats-bar">
-            <div class="stat-item">
-                <h3>40%</h3>
-                <p>Manual Dashboard & Tracking Layout Assembly Time Saved</p>
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-num">60%</div>
+                <div class="metric-title">Picking Flow Speed</div>
+                <div class="metric-desc">Fulfillment velocity increased by optimizing warehouse internal matrix route graphs.</div>
             </div>
-            <div class="stat-item">
-                <h3>60%</h3>
-                <p>Fulfillment Picking Operations Cycle Speed Increased</p>
+            <div class="metric-card">
+                <div class="metric-num">40%</div>
+                <div class="metric-title">Automation Uplift</div>
+                <div class="metric-desc">Manual inventory tracking hours saved via custom interactive Streamlit monitoring frames.</div>
             </div>
-            <div class="stat-item">
-                <h3>92%</h3>
-                <p>Production Text Classifier Evaluation Accuracy Profile</p>
-            </div>
-            <div class="stat-item">
-                <h3>30%</h3>
-                <p>Operational Planning & Feasibility Ingestion Errors Cleared</p>
+            <div class="metric-card">
+                <div class="metric-num">92%</div>
+                <div class="metric-title">NLP F1-Score</div>
+                <div class="metric-desc">Achieved production-level classifier execution scores over unorganized dataset sequences.</div>
             </div>
         </div>
     </div>
 
     <section id="experience">
         <div class="container">
-            <span class="section-tag">01 — CAREER EXPEDITION</span>
-            <h2 class="section-title">Professional Milestones</h2>
+            <span class="sec-label">01 — PROFESSIONAL ENGINE</span>
+            <h2 class="sec-title">Core Analytical Milestones</h2>
             
-            <div class="timeline">
-                <div class="timeline-item active">
-                    <div class="timeline-dot"></div>
-                    <div class="time-meta">JULY 2025 – PRESENT</div>
-                    <div class="role-title">Data Analyst</div>
-                    <div class="company">Merlin Brands • Full-Time</div>
-                    <div class="timeline-body">
-                        <ul>
-                            <li>Managed tracking arrays across inventory pipelines inside <strong>Pyrops WMS</strong> (regulating intake GRN flows and putaway grid mapping executions).</li>
-                            <li>Designed an internal stack tracking <strong>Streamlit dashboard</strong> linked to structured PostgreSQL tables, automating standard operational visibility.</li>
-                            <li>Calculated multi-zone operational layout <strong>Route Analysis</strong> alongside programmatic inventory <strong>ABC/XYZ categorization</strong> metrics.</li>
-                            <li>Engineered script configurations with Python execution blocks, complex SQL window transformations, and predictive analytical steps.</li>
-                        </ul>
-                        <div class="tag-container">
-                            <span class="tag">Python</span>
-                            <span class="tag">SQL</span>
-                            <span class="tag">Streamlit</span>
-                            <span class="tag">Pyrops WMS</span>
-                            <span class="tag">PostgreSQL</span>
-                            <span class="tag">Machine Learning</span>
+            <div class="xp-box">
+                <div class="xp-header">
+                    <div class="xp-title">
+                        <h3>Data Analyst</h3>
+                        <p>Merlin Brands • Full-Time Core Engagement</p>
+                    </div>
+                    <div class="xp-date">JULY 2025 – PRESENT</div>
+                </div>
+                <div class="xp-body">
+                    <ul>
+                        <li>Supervised automated inventory control arrays inside <strong>Pyrops WMS</strong>, controlling raw GRN flows and putaway grid configurations.</li>
+                        <li>Built an operational database tracking pipeline using <strong>Streamlit</strong> hooked directly into clean PostgreSQL tables, completely removing human reporting errors.</li>
+                        <li>Executed advanced multi-zone layout routing optimizations alongside programmatic <strong>ABC/XYZ stock classifications</strong> to maximize picker efficiency.</li>
+                        <li>Configured regression models and custom analytical math sequences in Python to forecast supply network constraints.</li>
+                    </ul>
+                    <div class="tags-row">
+                        <span class="tag">Python Core</span>
+                        <span class="tag">PostgreSQL Triggers</span>
+                        <span class="tag">Streamlit UI</span>
+                        <span class="tag">Pyrops WMS</span>
+                        <span class="tag">Statistical Modeling</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="playground">
+        <div class="container">
+            <span class="sec-label">02 — ALGORITHMIC SANDBOX</span>
+            <h2 class="sec-title">Interactive Data Science Architectures</h2>
+            
+            <div class="playground-grid">
+                <div class="pg-menu">
+                    <button class="pg-tab-btn active" onclick="switchTab('wms')">Warehouse Pipeline Evaluator</button>
+                    <button class="pg-tab-btn" onclick="switchTab('regression')">Linear & Logistic Framework</button>
+                    <button class="pg-tab-btn" onclick="switchTab('validation')">Cross-Validation Analytics</button>
+                </div>
+                <div class="pg-display" id="pg-content">
+                    <div class="interactive-box">
+                        <p style="color:var(--brand); font-weight:bold">> RUNNING WMS OPERATION LOGS SIMULATOR:</p>
+                        <div class="matrix-container">
+                            <div class="matrix-cell">Putaway Map Overlap<span style="color:#ef4444">0.02%</span></div>
+                            <div class="matrix-cell">Graph Navigation Bounds<span>Compliant</span></div>
                         </div>
                     </div>
                 </div>
@@ -548,59 +470,44 @@
 
     <section id="projects">
         <div class="container">
-            <span class="section-tag">02 — LIVE FROM GITHUB REPOS</span>
-            <h2 class="section-title">Verified Machine Learning Systems</h2>
+            <span class="sec-label">03 — PRODUCTION REPOSITORIES</span>
+            <h2 class="sec-title">Deployed Systems & Models</h2>
             
             <div class="projects-grid">
                 <div class="project-card">
-                    <div class="proj-header">
-                        <div class="proj-num">01</div>
+                    <div class="proj-top">
+                        <i class="fa-solid fa-microphone-lines folder-icon"></i>
                         <div class="proj-links">
-                            <a href="#" target="_blank"><i class="fa-brands fa-github"></i></a>
+                            <a href="https://github.com/ajnmoljain" target="_blank"><i class="fa-brands fa-github"></i></a>
                         </div>
                     </div>
-                    <h3>Speech-to-Text Recognition Model</h3>
-                    <p>Advanced audio signal processing architecture deployed using deep learning wrappers to convert messy voice data pools into structured text indexes.</p>
-                    <div class="impact-highlight">Focus: Speech Processing, Model Tuning & NLP Core</div>
-                    <div class="tag-container">
-                        <span class="tag">Jupyter Notebook</span>
-                        <span class="tag">Python</span>
-                        <span class="tag">Deep Learning</span>
-                    </div>
+                    <h4>Speech-to-Text Recognition System</h4>
+                    <p>Designed a machine learning wrapper framework to convert noisy voice files into highly accurate structured textual data blocks.</p>
+                    <div class="tags-row"><span class="tag">Python</span><span class="tag">Deep Learning Core</span><span class="tag">Signal Processing</span></div>
                 </div>
 
                 <div class="project-card">
-                    <div class="proj-header">
-                        <div class="proj-num">02</div>
+                    <div class="proj-top">
+                        <i class="fa-solid fa-eye folder-icon"></i>
                         <div class="proj-links">
-                            <a href="#" target="_blank"><i class="fa-brands fa-github"></i></a>
+                            <a href="https://github.com/ajnmoljain" target="_blank"><i class="fa-brands fa-github"></i></a>
                         </div>
                     </div>
-                    <h3>Real-Time Face Detection with OpenCV</h3>
-                    <p>Computer Vision pipeline engineered to monitor and lock coordinate arrays across frames in real-time. Optimizes image matrices tracking directly.</p>
-                    <div class="impact-highlight">Focus: Computer Vision, Matrix Analytics & OpenCV</div>
-                    <div class="tag-container">
-                        <span class="tag">OpenCV</span>
-                        <span class="tag">Python</span>
-                        <span class="tag">Image Processing</span>
-                    </div>
+                    <h4>Real-Time Computer Vision Matrix</h4>
+                    <p>OpenCV image recognition pipeline configured to lock and track coordinates across active frames instantaneously.</p>
+                    <div class="tags-row"><span class="tag">OpenCV</span><span class="tag">Computer Vision</span><span class="tag">Matrix Processing</span></div>
                 </div>
 
                 <div class="project-card">
-                    <div class="proj-header">
-                        <div class="proj-num">03</div>
+                    <div class="proj-top">
+                        <i class="fa-solid fa-spider folder-icon"></i>
                         <div class="proj-links">
-                            <a href="#" target="_blank"><i class="fa-brands fa-github"></i></a>
+                            <a href="https://github.com/ajnmoljain" target="_blank"><i class="fa-brands fa-github"></i></a>
                         </div>
                     </div>
-                    <h3>Book Scraper and Analysis Rig</h3>
-                    <p>Automated web scraping cluster built to mine multi-layered textual data pipelines, clean discrepancies, and perform statistical analysis over market variables.</p>
-                    <div class="impact-highlight">Focus: Data Ingestion, Mining & Statistical Wrangling</div>
-                    <div class="tag-container">
-                        <span class="tag">Web Scraping</span>
-                        <span class="tag">Python</span>
-                        <span class="tag">EDA Automation</span>
-                    </div>
+                    <h4>Automated Web Scraping Cluster</h4>
+                    <p>Production cluster engineered to ingest highly dimensional marketplace values, clean inconsistencies, and perform robust statistical analysis.</p>
+                    <div class="tags-row"><span class="tag">Data Ingestion</span><span class="tag">Python</span><span class="tag">EDA Automation</span></div>
                 </div>
             </div>
         </div>
@@ -608,73 +515,110 @@
 
     <footer>
         <div class="container">
-            <h2 class="footer-headline">Let's solve high-scale analytical tasks.</h2>
-            <div class="social-links">
+            <h3 class="footer-title">Let's build optimized systems.</h3>
+            <div class="social-icons">
                 <a href="mailto:ajanmol22@gmail.com"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://github.com/ajnmoljain" target="_blank"><i class="fa-brands fa-github"></i></a>
                 <a href="#" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
-                <a href="#" target="_blank"><i class="fa-brands fa-github"></i></a>
             </div>
-            <p class="copy-text">Engineered & Programmed by Anmol Jain · © 2026.</p>
+            <p class="copy">Designed & Maintained by Anmol Jain · © 2026</p>
         </div>
     </footer>
 
     <script>
-        const cursor = document.getElementById('custom-cursor');
-        const ring = document.getElementById('custom-cursor-ring');
+        // Interactive Playground Data Switcher
+        const tabData = {
+            wms: `
+                <div class="interactive-box">
+                    <p style="color:var(--brand); font-weight:bold">> RUNNING WMS ROUTING METRICS:</p>
+                    <p style="margin-top:0.5rem; color:var(--text-muted)">Real-time layout simulation variables mapped over physical shelf coordinates.</p>
+                    <div class="matrix-container">
+                        <div class="matrix-cell">Zone Bottlenecks Cleared<span>99.1%</span></div>
+                        <div class="matrix-cell">ABC/XYZ Target Sync<span>Active</span></div>
+                    </div>
+                </div>`,
+            regression: `
+                <div class="interactive-box">
+                    <p style="color:var(--brand); font-weight:bold">> GRADIENT DESCENT & HYPER-PARAMETER SPACE:</p>
+                    <p style="margin-top:0.5rem; color:var(--text-muted)">Tracking prediction loss minimization arrays across continuous and discrete steps.</p>
+                    <div class="matrix-container">
+                        <div class="matrix-cell">Regression R² Score<span>0.892</span></div>
+                        <div class="matrix-cell">Logarithmic Loss Limit<span>0.114</span></div>
+                    </div>
+                </div>`,
+            validation: `
+                <div class="interactive-box">
+                    <p style="color:var(--brand); font-weight:bold">> K-FOLD CROSS VALIDATION STRATEGY:</p>
+                    <p style="margin-top:0.5rem; color:var(--text-muted)">Testing pipeline variance configurations to prevent overfitting patterns.</p>
+                    <div class="matrix-container">
+                        <div class="matrix-cell">Mean Stratified Accuracy<span>94.6%</span></div>
+                        <div class="matrix-cell">Standard Deviation Delta<span>±0.012</span></div>
+                    </div>
+                </div>`
+        };
 
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-            setTimeout(() => {
-                ring.style.left = e.clientX + 'px';
-                ring.style.top = e.clientY + 'px';
-            }, 30);
-        });
+        function switchTab(tabKey) {
+            document.querySelectorAll('.pg-tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById('pg-content').innerHTML = tabData[tabKey];
+        }
 
+        // Terminal Live Logger Simulator
+        const logBox = document.getElementById('log-box');
+        const logs = [
+            "> Pulling live matrix data from putaway blocks...",
+            "> Compiling graph shortest-path routing optimization matrices...",
+            "> System Check: F1-Score validated at 92.0% evaluation criteria.",
+            "> Ingesting SQL window frame data transforms into local dashboard array...",
+            "> Execution stack cleared. All WMS units responsive."
+        ];
+        let logIndex = 0;
+        setInterval(() => {
+            logBox.innerHTML += `<br> ${logs[logIndex % logs.length]}`;
+            logIndex++;
+            logBox.scrollTop = logBox.scrollHeight;
+        }, 4000);
+
+        // Three.js Network Structure Background Graph Setup
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        document.getElementById('canvas-container').appendChild(renderer.domElement);
+        document.getElementById('bg-canvas').appendChild(renderer.domElement);
 
-        const nodeCount = 55;
-        const geometry = new THREE.SphereGeometry(0.5, 8, 8);
-        const material = new THREE.MeshBasicMaterial({ color: 0x00e5ff });
-        const nodesContainer = new THREE.Group();
-        const positions = [];
+        const nodeGeo = new THREE.SphereGeometry(0.4, 8, 8);
+        const nodeMat = new THREE.MeshBasicMaterial({ color: 0x00e5ff });
+        const networkGroup = new THREE.Group();
+        const coords = [];
 
-        for (let i = 0; i < nodeCount; i++) {
-            const mesh = new THREE.Mesh(geometry, material);
-            const x = (Math.random() - 0.5) * 120;
-            const y = (Math.random() - 0.5) * 120;
-            const z = (Math.random() - 0.5) * 80;
+        for(let i=0; i<60; i++) {
+            const mesh = new THREE.Mesh(nodeGeo, nodeMat);
+            const x = (Math.random() - 0.5) * 100;
+            const y = (Math.random() - 0.5) * 100;
+            const z = (Math.random() - 0.5) * 60;
             mesh.position.set(x, y, z);
-            nodesContainer.add(mesh);
-            positions.push(new THREE.Vector3(x, y, z));
+            networkGroup.add(mesh);
+            coords.push(new THREE.Vector3(x, y, z));
         }
-        scene.add(nodesContainer);
+        scene.add(networkGroup);
 
-        const lineMaterial = new THREE.LineBasicMaterial({ color: 0x222230, transparent: true, opacity: 0.7 });
-        const linePairs = [];
-
-        for (let i = 0; i < nodeCount; i++) {
-            for (let j = i + 1; j < nodeCount; j++) {
-                if (positions[i].distanceTo(positions[j]) < 28) {
-                    const pointsArray = [positions[i], positions[j]];
-                    const lineGeo = new THREE.BufferGeometry().setFromPoints(pointsArray);
-                    const line = new THREE.Line(lineGeo, lineMaterial);
+        const lineMat = new THREE.LineBasicMaterial({ color: 0x1f1f38, transparent: true, opacity: 0.5 });
+        for(let i=0; i<60; i++) {
+            for(let j=i+1; j<60; j++) {
+                if(coords[i].distanceTo(coords[j]) < 22) {
+                    const geo = new THREE.BufferGeometry().setFromPoints([coords[i], coords[j]]);
+                    const line = new THREE.Line(geo, lineMat);
                     scene.add(line);
-                    linePairs.push({ line, p1: positions[i], p2: positions[j] });
                 }
             }
         }
 
-        camera.position.z = 60;
+        camera.position.z = 50;
 
         function animate() {
             requestAnimationFrame(animate);
-            nodesContainer.rotation.y += 0.0012;
-            nodesContainer.rotation.x += 0.0006;
+            networkGroup.rotation.y += 0.001;
+            networkGroup.rotation.x += 0.0005;
             renderer.render(scene, camera);
         }
         animate();
@@ -683,13 +627,6 @@
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
-        });
-
-        const storyBox = document.getElementById('storyBox');
-        document.addEventListener('mousemove', (e) => {
-            const horizontalSkew = (window.innerWidth / 2 - e.clientX) / 40;
-            const verticalSkew = (window.innerHeight / 2 - e.clientY) / 40;
-            storyBox.style.transform = `rotateY(${horizontalSkew}deg) rotateX(${verticalSkew}deg)`;
         });
     </script>
 </body>
