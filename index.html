@@ -595,10 +595,14 @@ document.querySelectorAll('.sb-wrap').forEach(el=>sbObs.observe(el));
     for(let i=1;i<waypoints.length;i++)ctx.lineTo(waypoints[i].x*W,waypoints[i].y*H);
     ctx.strokeStyle='rgba(204,255,0,0.15)';ctx.lineWidth=1.2;ctx.setLineDash([4,4]);ctx.stroke();ctx.setLineDash([]);
 
-    particles.forEach(p=>{
-      p.t=(p.t+p.speed)%1;
-      const dynamicCoord=positionInterpolation(p.t);
-      ctx.beginPath();ctx.arc(dynamicCoord.x*W,dynamicCoord.y*H,3,0,Math.PI*2);ctx.fillStyle=var(--brand);ctx.fill();
+   particles.forEach(p => {
+  p.t = (p.t + p.speed) % 1;
+  const dynamicCoord = positionInterpolation(p.t);
+  ctx.beginPath();
+  ctx.arc(dynamicCoord.x * W, dynamicCoord.y * H, 3, 0, Math.PI * 2);
+  ctx.fillStyle = var(--brand); // <--- YEH RHI LINE!
+  ctx.fill();
+});
     });
     requestAnimationFrame(draw);
   }
