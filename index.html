@@ -1,633 +1,711 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anmol Jain | Data Scientist & Operations Analytics Portfolio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    
-    <style>
-        :root {
-            --bg: #030303;
-            --surface: #0a0a0f;
-            --surface-card: #12121a;
-            --brand: #ccff00; 
-            --neon-blue: #00e5ff;
-            --text: #ffffff;
-            --text-muted: #71717a;
-            --border: #1f1f2e;
-        }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Anmol Jain — Data Scientist & Ops Architect</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#020206;--s1:#060610;--s2:#0a0a1a;--s3:#0f0f26;
+  --card:#0a0a1f;--border:rgba(0,229,255,0.08);
+  --t1:#ffffff;--t2:#a0a0d0;--t3:#45456e;
+  --brand:#ccff00;--neon-blue:#00e5ff;--purple:#a06aff;--green:#3dffa0;--rose:#ff6a9a;
+}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t1);overflow-x:hidden;cursor:none}
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+/* SIMULATED DYNAMIC VECTOR CURSORS */
+#cur{position:fixed;width:8px;height:8px;background:var(--brand);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .15s,height .15s;mix-blend-mode:screen}
+#cur2{position:fixed;width:38px;height:38px;border:1px solid var(--neon-blue);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform .05s ease-out}
 
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            overflow-x: hidden;
-        }
+/* STREAMLINED LOADER CONTAINER */
+#loader{position:fixed;inset:0;background:var(--bg);z-index:9000;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1)}
+#loader.out{opacity:0;pointer-events:none}
+.load-name{font-family:'Playfair Display',serif;font-size:clamp(2.5rem,7vw,5.5rem);font-weight:900;letter-spacing:-.02em;background:linear-gradient(135deg,var(--brand),var(--neon-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:glow 2.5s ease infinite alternate}
+@keyframes glow{from{filter:drop-shadow(0 0 15px rgba(204,255,0,0.2))}to{filter:drop-shadow(0 0 35px rgba(0,229,255,0.4))}}
+.load-bar{width:220px;height:2px;background:rgba(255,255,255,0.05);border-radius:100px;margin-top:2rem;overflow:hidden}
+.load-fill{height:100%;background:linear-gradient(90deg,var(--brand),var(--neon-blue));animation:loadfill 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;width:0%}
+@keyframes loadfill{to{width:100%}}
 
-        #bg-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -1;
-            opacity: 0.35;
-            pointer-events: none;
-        }
+#three-canvas{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:0.4}
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
+/* NAVIGATION MINIMAL BAR */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:1.2rem 5vw;display:flex;align-items:center;justify-content:space-between;background:rgba(2,2,6,0.7);backdrop-filter:blur(25px);border-bottom:1px solid var(--border)}
+.logo{font-family:'Space Grotesk',sans-serif;font-size:1.4rem;font-weight:800;color:var(--t1);text-decoration:none;letter-spacing:-0.5px}
+.logo span{color:var(--brand)}
+.navlinks{display:flex;gap:2rem;list-style:none}
+.navlinks a{font-size:.75rem;color:var(--t2);text-decoration:none;letter-spacing:.12em;text-transform:uppercase;font-weight:600;transition:color .2s;cursor:none}
+.navlinks a:hover{color:var(--brand)}
+.nav-hire{background:var(--brand);color:#000;padding:.55rem 1.4rem;border-radius:4px;font-size:.75rem;font-weight:700;text-decoration:none;cursor:none;transition:all .2s;letter-spacing:.05em;text-transform:uppercase}
+.nav-hire:hover{box-shadow:0 0 25px rgba(204,255,0,0.5);transform:translateY(-1px)}
 
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 1.5rem 0;
-            z-index: 100;
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border);
-            background: rgba(3, 3, 3, 0.7);
-        }
+/* HERO BASE */
+#hero{position:relative;z-index:10;min-height:100vh;display:flex;align-items:center;padding:0 5vw;max-width:1300px;margin:0 auto}
+.hero-content{max-width:750px;padding-top:4rem}
+.hero-badge{display:inline-flex;align-items:center;gap:.5rem;border:1px solid var(--border);background:rgba(0,229,255,0.04);border-radius:4px;padding:.4rem .9rem;font-size:.7rem;font-weight:700;color:var(--neon-blue);letter-spacing:.12em;text-transform:uppercase;margin-bottom:2rem}
+.hero-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)}
+h1.hero-title{font-family:'Playfair Display',serif;font-size:clamp(3.2rem,7.5vw,7.5rem);font-weight:900;line-height:1.05;letter-spacing:-.03em;margin-bottom:1.5rem}
+h1.hero-title .line1{display:block;color:var(--t1)}
+h1.hero-title .line2{display:block;background:linear-gradient(135deg,var(--brand) 0%,var(--neon-blue) 50%,var(--purple) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-style:italic}
+.hero-sub{font-size:1.15rem;color:var(--t2);font-weight:300;line-height:1.8;max-width:580px;margin-bottom:3rem}
+.hero-sub strong{color:var(--brand);font-weight:600}
 
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+.btn-primary{display:inline-flex;align-items:center;gap:.5rem;background:var(--brand);color:#000;padding:.9rem 2rem;border-radius:4px;font-size:.85rem;font-weight:700;text-decoration:none;cursor:none;transition:all .2s;letter-spacing:.05em;text-transform:uppercase}
+.btn-primary:hover{box-shadow:0 0 30px rgba(204,255,0,0.4);transform:translateY(-2px)}
+.btn-secondary{display:inline-flex;align-items:center;gap:.5rem;background:transparent;color:var(--t1);padding:.9rem 2rem;border-radius:4px;font-size:.85rem;font-weight:600;text-decoration:none;cursor:none;border:1px solid var(--border);transition:all .2s;letter-spacing:.05em;text-transform:uppercase}
+.btn-secondary:hover{border-color:var(--neon-blue);background:rgba(0,229,255,0.03)}
 
-        .logo {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text);
-            text-decoration: none;
-            letter-spacing: -1px;
-        }
+/* TICKER ARRAY SPEED LOOP */
+.ticker{overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:.8rem 0;position:relative;z-index:10;background:#03030b}
+.ticker-inner{display:flex;gap:3rem;animation:tick 22s linear infinite;width:max-content}
+@keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.ti{font-size:.7rem;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.12em;white-space:nowrap;display:flex;align-items:center;gap:.5rem}
+.ti span{color:var(--brand)}
+.ti::after{content:'◆';color:rgba(0,229,255,0.15);font-size:.5rem;margin-left:.5rem}
 
-        .logo span { color: var(--brand); }
+/* CORE SHELL DESIGN STRUCTURES */
+.section{position:relative;z-index:10;padding:7rem 5vw;max-width:1300px;margin:0 auto}
+.stag{font-size:.7rem;font-weight:700;color:var(--neon-blue);letter-spacing:.2em;text-transform:uppercase;display:flex;align-items:center;gap:.75rem;margin-bottom:1rem;opacity:0;transform:translateY(15px);transition:all .6s ease}
+.stag::before{content:'';width:20px;height:1px;background:var(--neon-blue)}
+.stag.v{opacity:1;transform:none}
+h2.shead{font-family:'Playfair Display',serif;font-size:clamp(2.4rem,5vw,4.5rem);font-weight:900;line-height:1.05;letter-spacing:-.02em;margin-bottom:1.5rem;opacity:0;transform:translateY(20px);transition:all .7s ease}
+h2.shead.v{opacity:1;transform:none}
 
-        .btn-connect {
-            background: transparent;
-            color: var(--brand);
-            border: 1px solid var(--brand);
-            padding: 0.6rem 1.4rem;
-            border-radius: 8px;
-            font-weight: 600;
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-        }
+/* TIMELINE TRACK STRUCTURAL MATRIX */
+.timeline{position:relative;padding-left:3.5rem}
+.timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:1px;background:linear-gradient(180deg,transparent,var(--brand),var(--purple),transparent)}
+.tl-item{position:relative;margin-bottom:4.5rem;opacity:0;transform:translateX(-20px);transition:all .7s ease}
+.tl-item.v{opacity:1;transform:none}
+.tl-dot{position:absolute;left:-3.9rem;top:.3rem;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--border)}
+.tl-dot.gold{background:var(--brand);box-shadow:0 0 15px var(--brand)}
+.tl-dot.blue{background:var(--neon-blue);box-shadow:0 0 15px var(--neon-blue)}
+.tl-dot.purple{background:var(--purple);box-shadow:0 0 15px var(--purple)}
+.tl-year{font-size:.7rem;font-weight:700;color:var(--brand);letter-spacing:.1em;margin-bottom:.4rem}
+.tl-title{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;margin-bottom:.3rem}
+.tl-sub{font-size:.8rem;color:var(--neon-blue);margin-bottom:.8rem;font-style:italic}
+.tl-body{font-size:.9rem;color:var(--t2);line-height:1.75;max-width:650px}
+.tl-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1rem}
+.tltag{font-size:.65rem;font-weight:600;padding:.2rem .6rem;border-radius:4px;border:1px solid var(--border);color:var(--t2);background:var(--s1)}
 
-        .btn-connect:hover {
-            background: var(--brand);
-            color: #000;
-            box-shadow: 0 0 15px rgba(204, 255, 0, 0.4);
-        }
+/* METRICS & NUMERICAL SHOWCASES */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1.25rem;margin:4rem 0}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:2rem 1.2rem;text-align:center;position:relative;opacity:0;transform:translateY(20px);transition:all .6s ease}
+.stat-card.v{opacity:1;transform:none}
+.stat-card:hover{border-color:var(--brand)}
+.stat-val{font-family:'Space Grotesk',sans-serif;font-size:3.2rem;font-weight:700;line-height:1;color:var(--brand);display:block}
+.stat-label{font-size:.7rem;color:var(--t2);text-transform:uppercase;letter-spacing:.08em;margin-top:.6rem;display:block}
 
-        /* Hero & Dynamic Terminal Layout */
-        .hero {
-            padding: 10rem 0 5rem 0;
-            min-height: 90vh;
-            display: flex;
-            align-items: center;
-        }
+/* REACTIVE PROFICIENCY COMPONENT */
+.sb-wrap{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:2.2rem}
+.sb-hd{font-size:.65rem;text-transform:uppercase;letter-spacing:.15em;color:var(--neon-blue);margin-bottom:1.5rem;font-weight:700}
+.sbr{margin-bottom:1.3rem}
+.sbr-h{display:flex;justify-content:space-between;font-size:.8rem;color:var(--t2);margin-bottom:.4rem}
+.sbr-h span:last-child{color:var(--brand);font-weight:700}
+.sbr-track{height:3px;background:var(--s3);border-radius:100px;overflow:hidden}
+.sbr-fill{height:100%;width:0%;border-radius:100px;background:linear-gradient(90deg,var(--purple),var(--brand));transition:width 1.5s cubic-bezier(0.1, 1, 0.1, 1)}
+.about-2col{display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;align-items:start}
+.ap{color:var(--t2);line-height:1.8;margin-bottom:1rem;font-size:.95rem}
+.edu-box{background:var(--s2);border:1px solid var(--border);border-left:2px solid var(--brand);border-radius:8px;padding:1.2rem;margin-top:1.5rem}
+.edu-school{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700}
+.edu-deg{font-size:.8rem;color:var(--t2);margin-top:.2rem}
+.edu-yr{display:inline-block;margin-top:.5rem;background:rgba(204,255,0,0.08);color:var(--brand);font-size:.65rem;padding:.2rem .6rem;border-radius:4px;font-weight:700}
 
-        .hero-grid {
-            display: grid;
-            grid-template-columns: 1.2fr 0.8fr;
-            gap: 4rem;
-            align-items: center;
-        }
+/* PRODUCTION-GRADE DYNAMIC WMS GRAPH ENGINE */
+#wh-section{background:var(--s1)}
+#wh-stage{border:1px solid var(--border);border-radius:16px;background:var(--s2);padding:2rem;position:relative}
+.wh-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem}
+.wh-top h3{font-family:'Space Grotesk',sans-serif;font-size:1.3rem;font-weight:700;letter-spacing:-0.3px}
+.wh-legend{display:flex;flex-wrap:wrap;gap:1rem}
+.whl{display:flex;align-items:center;gap:.4rem;font-size:.7rem;color:var(--t2);font-weight:500}
+.whl-dot{width:8px;height:8px;border-radius:2px}
+#wh-canvas{width:100%;height:350px;border-radius:8px;display:block;background:#030308;border:1px solid rgba(255,255,255,0.02)}
+.wh-metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1rem;margin-top:1.5rem}
+.wh-m{background:var(--s3);border:1px solid var(--border);border-radius:8px;padding:1rem}
+.wh-m .mv{font-family:'Space Grotesk',sans-serif;font-size:1.5rem;font-weight:700;color:var(--brand);display:block}
+.wh-m .ml{font-size:.6rem;color:var(--t2);text-transform:uppercase;letter-spacing:.05em;margin-top:.2rem;display:block}
 
-        .hero-content h1 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 4rem;
-            line-height: 1.1;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            letter-spacing: -2px;
-        }
+/* ML SYSTEMS LAYOUT */
+.ml-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:1.25rem;margin-bottom:3rem}
+.ml-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:2rem;opacity:0;transform:translateY(20px);transition:all .6s ease}
+.ml-card.v{opacity:1;transform:none}
+.ml-card:hover{border-color:var(--neon-blue)}
+.ml-icon{font-size:1.8rem;margin-bottom:.8rem;display:block}
+.ml-title{font-family:'Space Grotesk',sans-serif;font-size:1.15rem;font-weight:700;color:var(--neon-blue);margin-bottom:.5rem}
+.ml-body{font-size:.85rem;color:var(--t2);line-height:1.7}
 
-        .hero-content h1 em {
-            font-style: normal;
-            color: var(--brand);
-        }
+.kfold{display:flex;flex-direction:column;gap:4px;margin-top:1.2rem}
+.krow{display:flex;gap:4px}
+.kc{height:12px;border-radius:2px;flex:1}
+.kc.kt{background:var(--brand)}
+.kc.ktr{background:var(--s3);border:1px solid var(--border)}
 
-        .hero-content p {
-            color: var(--text-muted);
-            font-size: 1.2rem;
-            line-height: 1.6;
-            margin-bottom: 2.5rem;
-        }
+.ens-bars{display:flex;flex-direction:column;gap:.6rem;margin-top:1.2rem}
+.ens-row{display:flex;align-items:center;gap:.7rem;font-size:.75rem;color:var(--t2)}
+.ens-name{width:80px;flex-shrink:0;font-family:monospace}
+.ens-track{flex:1;height:4px;background:var(--s3);border-radius:100px;overflow:hidden}
+.ens-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--purple),var(--neon-blue))}
+.ens-val{width:35px;flex-shrink:0;text-align:right;color:var(--t1);font-weight:700}
 
-        /* Live Warehouse Simulator Terminal Widget */
-        .terminal-widget {
-            background: var(--surface-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.5rem;
-            font-family: monospace;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-        }
+.cm{display:grid;grid-template-columns:1fr 1fr;gap:4px;width:120px;margin-top:1.2rem}
+.cm-c{height:32px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-direction:column}
+.cm-c small{font-size:.5rem;font-weight:400;opacity:.6}
+.cm-c.tp,.cm-c.tn{background:rgba(61,255,160,0.12);color:var(--green)}
+.cm-c.fp,.cm-c.fn{background:rgba(255,106,154,0.12);color:var(--rose)}
+.cm-lbl{font-size:.65rem;color:var(--t2);margin-top:.6rem;font-family:monospace}
 
-        .term-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 0.8rem;
-            margin-bottom: 1rem;
-        }
+/* SIMULATION DATA MODEL TESTING CANVAS */
+#playground{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:2rem;margin-bottom:3.5rem;opacity:0;transition:opacity 0.8s ease}
+#playground.v{opacity:1}
+.pg-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem}
+.pg-title{font-family:'Space Grotesk',sans-serif;font-size:1.3rem;font-weight:700}
+.pg-tabs{display:flex;flex-wrap:wrap;gap:.3rem}
+.pgtab{font-size:.65rem;font-weight:700;padding:.4rem .9rem;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--t2);cursor:none;transition:all .2s;text-transform:uppercase;letter-spacing:.05em}
+.pgtab.on{background:var(--brand);color:#000;border-color:var(--brand)}
+#pg-canvas{width:100%;height:250px;border-radius:6px;background:#030308;display:block;border:1px solid rgba(255,255,255,0.01)}
+.pg-caption{margin-top:.8rem;font-size:.75rem;color:var(--neon-blue);font-family:monospace;font-style:normal}
 
-        .term-dots { display: flex; gap: 6px; }
-        .dot { width: 10px; height: 10px; border-radius: 50%; }
-        .dot.r { background: #ef4444; }
-        .dot.y { background: #eab308; }
-        .dot.g { background: #22c55e; }
-        .term-title { color: var(--text-muted); font-size: 0.8rem; }
+/* REPOSITORIES LOGIC CARDS */
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:1.25rem}
+.pcard{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:2rem;cursor:none;opacity:0;transform:translateY(20px);transition:all .6s ease;position:relative}
+.pcard.v{opacity:1;transform:none}
+.pcard:hover{border-color:var(--brand);background:rgba(204,255,0,0.01)}
+.pcard-num{font-family:'Space Grotesk',sans-serif;font-size:3.5rem;font-weight:700;color:var(--s3);line-height:1;margin-bottom:.5rem;letter-spacing:-2px}
+.pcard-title{font-family:'Space Grotesk',sans-serif;font-size:1.2rem;font-weight:700;margin-bottom:.5rem}
+.pcard-desc{font-size:.85rem;color:var(--t2);line-height:1.6;margin-bottom:1.2rem}
+.pcard-impact{font-size:.8rem;font-weight:700;color:var(--green);display:flex;align-items:center;gap:.3rem;margin-bottom:1.2rem;font-family:monospace}
+.pcard-impact::before{content:'[EXP] → '}
+.ptags{display:flex;flex-wrap:wrap;gap:.35rem}
+.ptag{font-size:.65rem;font-weight:600;padding:.15rem .55rem;border-radius:4px;background:var(--s2);border:1px solid var(--border);color:var(--t2)}
 
-        .sim-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.6rem;
-            font-size: 0.85rem;
-        }
+/* STRUT SKILLS CHIPS */
+.sk-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.25rem}
+.skcard{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;opacity:0;transform:translateY(15px);transition:all .6s ease}
+.skcard.v{opacity:1;transform:none}
+.skcard:hover{border-color:var(--purple)}
+.sk-ico{font-size:1.5rem;margin-bottom:.6rem;display:block}
+.sk-title{font-family:'Space Grotesk',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:.8rem}
+.sk-pills{display:flex;flex-wrap:wrap;gap:.35rem}
+.skp{font-size:.65rem;font-weight:600;padding:.2rem .6rem;border-radius:4px;background:var(--s2);border:1px solid var(--border);color:var(--t2)}
+.skp.g{border-color:rgba(204,255,0,0.2);color:var(--brand);background:rgba(204,255,0,0.03)}
+.skp.b{border-color:rgba(0,229,255,0.2);color:var(--neon-blue);background:rgba(0,229,255,0.03)}
+.skp.p{border-color:rgba(160,106,255,0.2);color:var(--purple);background:rgba(160,106,255,0.03)}
+.skp.gr{border-color:rgba(61,255,160,0.2);color:var(--green);background:rgba(61,255,160,0.03)}
 
-        .sim-label { color: var(--neon-blue); }
-        .sim-val { color: var(--brand); font-weight: bold; }
+.tips-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.25rem}
+.tip{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;position:relative;opacity:0;transform:translateY(15px);transition:all .6s ease}
+.tip.v{opacity:1;transform:none}
+.tip-n{font-family:'Space Grotesk',sans-serif;font-size:2.8rem;font-weight:700;color:rgba(0,229,255,0.04);position:absolute;top:1rem;right:1.2rem;line-height:1}
+.tip-title{font-size:.75rem;font-weight:700;color:var(--brand);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.5rem}
+.tip-body{font-size:.82rem;color:var(--t2);line-height:1.7}
 
-        .progress-bar-container {
-            background: #1a1a26;
-            height: 6px;
-            border-radius: 3px;
-            overflow: hidden;
-            margin-top: 4px;
-            width: 100%;
-        }
+/* CONTACT CONTAINER BOX */
+.cbox{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:5rem 3rem;text-align:center;position:relative;opacity:0;transition:opacity 0.8s ease}
+.cbox.v{opacity:1}
+.ch{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,4.5vw,4.2rem);font-weight:900;letter-spacing:-.02em;line-height:1.1;margin-bottom:1rem}
+.ch em{font-style:italic;background:linear-gradient(135deg,var(--brand),var(--neon-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.csub{color:var(--t2);font-size:.95rem;font-weight:300;margin-bottom:2.5rem;display:block;max-width:460px;margin-inline:auto;line-height:1.7}
+.clinks{display:flex;justify-content:center;gap:.6rem;flex-wrap:wrap}
+.clink{display:inline-flex;align-items:center;gap:.5rem;padding:.75rem 1.4rem;border-radius:4px;border:1px solid var(--border);color:var(--t2);text-decoration:none;font-size:.8rem;font-weight:600;background:var(--s1);transition:all .2s;cursor:none;text-transform:uppercase;letter-spacing:.05em}
+.clink:hover{border-color:var(--brand);color:var(--brand);background:rgba(204,255,0,0.03)}
+.clink svg{width:14px;height:14px;stroke:currentColor}
 
-        .progress-bar-fill {
-            background: var(--brand);
-            height: 100%;
-            width: 84%;
-            animation: pulse-width 3s infinite alternate;
-        }
+footer{text-align:center;padding:2.5rem;font-size:.75rem;color:var(--t3);border-top:1px solid var(--border);max-width:1300px;margin:0 auto;position:relative;z-index:10;font-family:monospace}
 
-        @keyframes pulse-width {
-            0% { width: 75%; }
-            100% { width: 94%; }
-        }
+.rv{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease}
+.rv.v{opacity:1;transform:none}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
 
-        .live-log {
-            background: #050507;
-            padding: 0.8rem;
-            border-radius: 6px;
-            margin-top: 1rem;
-            font-size: 0.75rem;
-            color: #4ade80;
-            max-height: 100px;
-            overflow-y: hidden;
-            border: 1px solid #141420;
-        }
-
-        /* Metrics Bar */
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 2rem;
-            margin-bottom: 6rem;
-        }
-
-        .metric-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            padding: 2rem;
-            border-radius: 12px;
-            transition: all 0.3s;
-        }
-
-        .metric-card:hover { border-color: var(--neon-blue); transform: translateY(-2px); }
-        .metric-num { font-family: 'Space Grotesk', sans-serif; font-size: 3rem; font-weight: 700; color: var(--brand); }
-        .metric-title { font-weight: 600; margin: 0.5rem 0 0.25rem 0; font-size: 1.1rem; }
-        .metric-desc { color: var(--text-muted); font-size: 0.85rem; line-height: 1.4; }
-
-        /* Experience Timeline */
-        section { padding: 6rem 0; border-top: 1px solid var(--border); }
-        .sec-label { color: var(--neon-blue); font-family: 'Space Grotesk', sans-serif; text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem; margin-bottom: 0.5rem; display: block; }
-        .sec-title { font-family: 'Space Grotesk', sans-serif; font-size: 2.5rem; margin-bottom: 3rem; }
-
-        .xp-box {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 2.5rem;
-            position: relative;
-        }
-
-        .xp-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .xp-title h3 { font-size: 1.8rem; font-family: 'Space Grotesk', sans-serif; }
-        .xp-title p { color: var(--brand); font-weight: 600; margin-top: 0.25rem; }
-        .xp-date { background: #12121f; padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.85rem; border: 1px solid var(--border); }
-
-        .xp-body ul { list-style: none; }
-        .xp-body li { position: relative; padding-left: 1.5rem; color: #d1d1d6; line-height: 1.7; margin-bottom: 0.8rem; }
-        .xp-body li::before { content: '⚡'; position: absolute; left: 0; color: var(--neon-blue); }
-
-        .tags-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 2rem; }
-        .tag { background: #14141f; border: 1px solid var(--border); color: #a1a1aa; padding: 0.3rem 0.8rem; border-radius: 6px; font-size: 0.8rem; font-weight: 500; }
-
-        /* Interactive ML Playground Section */
-        .playground-grid {
-            display: grid;
-            grid-template-columns: 0.8fr 1.2fr;
-            gap: 3rem;
-        }
-
-        .pg-menu { display: flex; flex-direction: column; gap: 0.8rem; }
-        .pg-tab-btn {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            color: var(--text-muted);
-            padding: 1.2rem;
-            border-radius: 10px;
-            text-align: left;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .pg-tab-btn.active, .pg-tab-btn:hover {
-            border-color: var(--brand);
-            color: var(--text);
-            background: rgba(204, 255, 0, 0.03);
-        }
-
-        .pg-display {
-            background: #050508;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 2rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .interactive-box { font-family: monospace; }
-        .matrix-container { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 1rem; }
-        .matrix-cell { background: #0f0f16; padding: 1rem; border-radius: 6px; border: 1px solid var(--border); text-align: center; }
-        .matrix-cell span { display: block; font-size: 1.5rem; font-weight: bold; color: var(--neon-blue); margin-top: 4px; }
-
-        /* Project Cards */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
-        }
-
-        .project-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 2rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transition: all 0.3s;
-        }
-
-        .project-card:hover { border-color: var(--brand); transform: translateY(-4px); }
-        .proj-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
-        .folder-icon { font-size: 1.8rem; color: var(--neon-blue); }
-        .proj-links a { color: var(--text); font-size: 1.2rem; margin-left: 0.8rem; transition: color 0.2s; }
-        .proj-links a:hover { color: var(--brand); }
-
-        .project-card h4 { font-family: 'Space Grotesk', sans-serif; font-size: 1.4rem; margin-bottom: 0.8rem; }
-        .project-card p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.5; margin-bottom: 1.5rem; }
-
-        footer { background: #020204; padding: 5rem 0; border-top: 1px solid var(--border); text-align: center; }
-        .footer-title { font-family: 'Space Grotesk', sans-serif; font-size: 2.5rem; margin-bottom: 1.5rem; }
-        .social-icons { display: flex; justify-content: center; gap: 2rem; margin-bottom: 3rem; }
-        .social-icons a { color: var(--text-muted); font-size: 1.5rem; transition: color 0.3s; }
-        .social-icons a:hover { color: var(--brand); }
-        .copy { color: #3f3f46; font-size: 0.85rem; }
-
-        @media(max-width: 768px) {
-            .hero-grid, .playground-grid { grid-template-columns: 1fr; }
-            .hero-content h1 { font-size: 2.8rem; }
-        }
-    </style>
+@media(max-width:768px){
+  .about-2col{grid-template-columns:1fr}
+  .navlinks{display:none}
+  .cbox{padding:3rem 1.5rem}
+  #hero{padding-top:6rem}
+}
+</style>
 </head>
 <body>
 
-    <div id="bg-canvas"></div>
+<div id="loader">
+  <div class="load-name">Anmol Jain</div>
+  <div class="load-bar"><div class="load-fill"></div></div>
+</div>
 
-    <nav>
-        <div class="container nav-container">
-            <a href="#" class="logo">ANMOL<span>JAIN</span></a>
-            <a href="mailto:ajanmol22@gmail.com" class="btn-connect">Contact Engine <i class="fa-solid fa-bolt"></i></a>
-        </div>
-    </nav>
+<canvas id="three-canvas"></canvas>
+<div id="cur"></div>
+<div id="cur2"></div>
 
-    <section class="hero">
-        <div class="container hero-grid">
-            <div class="hero-content">
-                <span class="sec-label">DATA ANALYST // TRANSITIONING DATA SCIENTIST</span>
-                <h1>Engineering <em>Algorithms</em> For High-Scale Logistical Tasks.</h1>
-                <p>Specializing in mapping automated processing pipelines, resolving physical supply chain execution bottlenecks inside high-grid frameworks, and building predictive machine learning models.</p>
-                <div class="tags-row">
-                    <span class="tag"><i class="fa-brands fa-python"></i> Python Stack</span>
-                    <span class="tag"><i class="fa-solid fa-database"></i> SQL Windows</span>
-                    <span class="tag"><i class="fa-solid fa-chart-line"></i> Predictive ML</span>
-                    <span class="tag"><i class="fa-solid fa-network-wired"></i> Graph Routing</span>
-                </div>
-            </div>
+<nav>
+  <a class="logo" href="#">ANMOL<span>JAIN</span></a>
+  <ul class="navlinks">
+    <li><a href="#story">Story</a></li>
+    <li><a href="#wh-section">Warehouse</a></li>
+    <li><a href="#ml-section">ML / DS</a></li>
+    <li><a href="#projects">Projects</a></li>
+  </ul>
+  <a class="nav-hire" href="mailto:ajanmol22@gmail.com">Contact Engine ⚡</a>
+</nav>
 
-            <div class="terminal-widget">
-                <div class="term-header">
-                    <div class="term-dots">
-                        <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
-                    </div>
-                    <div class="term-title">warehouse_graph_optimizer.py</div>
-                </div>
-                <div class="sim-row">
-                    <span class="sim-label">Target System:</span>
-                    <span class="sim-val">Pyrops WMS Engine</span>
-                </div>
-                <div class="sim-row">
-                    <span class="sim-label">Putaway Grid Map:</span>
-                    <span class="sim-val" id="grid-status">Active / Optimized</span>
-                </div>
-                <div class="sim-row">
-                    <span class="sim-label">Route Optimization Rate:</span>
-                    <span class="sim-val">98.4%</span>
-                </div>
-                <div class="progress-bar-container">
-                    <div class="progress-bar-fill"></div>
-                </div>
-                <div class="live-log" id="log-box">
-                    > Initializing Multi-Zone ABC/XYZ array classification...<br>
-                    > Resolving picker route constraints...
-                </div>
-            </div>
-        </div>
-    </section>
+<section id="hero">
+  <div class="hero-content">
+    <div class="hero-badge">Open to DA · ML · Junior DS Roles</div>
+    <h1 class="hero-title">
+      <span class="line1">Anmol Jain.</span>
+      <span class="line2">Data tells<br>my story.</span>
+    </h1>
+    <p class="hero-sub">
+      Data Analyst · Supply Chain &amp; Warehouse Ops <br>
+      <strong>1.5+ years</strong> turning messy operational logs into automated execution pipelines and production ML models.
+    </p>
+    <div class="hero-btns">
+      <a class="btn-primary" href="#story">Explore Journey ↓</a>
+      <a class="btn-secondary" href="#contact">Execute Query</a>
+    </div>
+  </div>
+</section>
 
-    <div class="container">
-        <div class="metrics-grid">
-            <div class="metric-card">
-                <div class="metric-num">60%</div>
-                <div class="metric-title">Picking Flow Speed</div>
-                <div class="metric-desc">Fulfillment velocity increased by optimizing warehouse internal matrix route graphs.</div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-num">40%</div>
-                <div class="metric-title">Automation Uplift</div>
-                <div class="metric-desc">Manual inventory tracking hours saved via custom interactive Streamlit monitoring frames.</div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-num">92%</div>
-                <div class="metric-title">NLP F1-Score</div>
-                <div class="metric-desc">Achieved production-level classifier execution scores over unorganized dataset sequences.</div>
-            </div>
-        </div>
+<div class="ticker">
+  <div class="ticker-inner">
+    <span class="ti"><span>Pyrops WMS</span></span><span class="ti"><span>GRN Processing</span></span><span class="ti"><span>Putaway Management</span></span><span class="ti"><span>ABC/XYZ Analysis</span></span><span class="ti"><span>Route Optimization</span></span><span class="ti"><span>Cross-Validation</span></span><span class="ti"><span>Ensemble Voting</span></span><span class="ti"><span>Confusion Matrix</span></span><span class="ti"><span>Streamlit Dashboard</span></span>
+    <span class="ti"><span>Pyrops WMS</span></span><span class="ti"><span>GRN Processing</span></span><span class="ti"><span>Putaway Management</span></span><span class="ti"><span>ABC/XYZ Analysis</span></span><span class="ti"><span>Route Optimization</span></span><span class="ti"><span>Cross-Validation</span></span><span class="ti"><span>Ensemble Voting</span></span><span class="ti"><span>Confusion Matrix</span></span><span class="ti"><span>Streamlit Dashboard</span></span>
+  </div>
+</div>
+
+<section class="section" id="story">
+  <p class="stag rv">00 — Origin Story</p>
+  <h2 class="shead rv">The making of<br><em style="font-style:italic;background:linear-gradient(135deg,var(--brand),var(--neon-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">a data scientist</em></h2>
+
+  <div class="timeline">
+    <div class="tl-item rv">
+      <div class="tl-dot purple"></div>
+      <div class="tl-year">2023 — Academic Base</div>
+      <div class="tl-title">PGDM · Data Analytics (Major)</div>
+      <div class="tl-sub">Doon Business School</div>
+      <div class="tl-body">
+        Formed foundational statistical structures, multi-variable analytical matrices, and exploratory database paradigms. 
+      </div>
+      <div class="tl-tags"><span class="tltag">Statistics</span><span class="tltag">Business Analytics</span><span class="tltag">SQL</span><span class="tltag">Excel</span></div>
     </div>
 
-    <section id="experience">
-        <div class="container">
-            <span class="sec-label">01 — PROFESSIONAL ENGINE</span>
-            <h2 class="sec-title">Core Analytical Milestones</h2>
-            
-            <div class="xp-box">
-                <div class="xp-header">
-                    <div class="xp-title">
-                        <h3>Data Analyst</h3>
-                        <p>Merlin Brands • Full-Time Core Engagement</p>
-                    </div>
-                    <div class="xp-date">JULY 2025 – PRESENT</div>
-                </div>
-                <div class="xp-body">
-                    <ul>
-                        <li>Supervised automated inventory control arrays inside <strong>Pyrops WMS</strong>, controlling raw GRN flows and putaway grid configurations.</li>
-                        <li>Built an operational database tracking pipeline using <strong>Streamlit</strong> hooked directly into clean PostgreSQL tables, completely removing human reporting errors.</li>
-                        <li>Executed advanced multi-zone layout routing optimizations alongside programmatic <strong>ABC/XYZ stock classifications</strong> to maximize picker efficiency.</li>
-                        <li>Configured regression models and custom analytical math sequences in Python to forecast supply network constraints.</li>
-                    </ul>
-                    <div class="tags-row">
-                        <span class="tag">Python Core</span>
-                        <span class="tag">PostgreSQL Triggers</span>
-                        <span class="tag">Streamlit UI</span>
-                        <span class="tag">Pyrops WMS</span>
-                        <span class="tag">Statistical Modeling</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <div class="tl-item rv d1">
+      <div class="tl-dot blue"></div>
+      <div class="tl-year">Nov 2024 – Jan 2025 — Initial POC Validation</div>
+      <div class="tl-title">Data Analyst Intern</div>
+      <div class="tl-sub">Cognifyz Technologies</div>
+      <div class="tl-body">
+        Processed and cleaned data anomalies over datasets containing 10,000+ business operation instances. Engineered continuous regression variants to predict target performance metrics.
+      </div>
+      <div class="tl-tags"><span class="tltag">Python</span><span class="tltag">EDA Automation</span><span class="tltag">Regression</span><span class="tltag">Seaborn</span></div>
+    </div>
 
-    <section id="playground">
-        <div class="container">
-            <span class="sec-label">02 — ALGORITHMIC SANDBOX</span>
-            <h2 class="sec-title">Interactive Data Science Architectures</h2>
-            
-            <div class="playground-grid">
-                <div class="pg-menu">
-                    <button class="pg-tab-btn active" onclick="switchTab('wms')">Warehouse Pipeline Evaluator</button>
-                    <button class="pg-tab-btn" onclick="switchTab('regression')">Linear & Logistic Framework</button>
-                    <button class="pg-tab-btn" onclick="switchTab('validation')">Cross-Validation Analytics</button>
-                </div>
-                <div class="pg-display" id="pg-content">
-                    <div class="interactive-box">
-                        <p style="color:var(--brand); font-weight:bold">> RUNNING WMS OPERATION LOGS SIMULATOR:</p>
-                        <div class="matrix-container">
-                            <div class="matrix-cell">Putaway Map Overlap<span style="color:#ef4444">0.02%</span></div>
-                            <div class="matrix-cell">Graph Navigation Bounds<span>Compliant</span></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <div class="tl-item rv d2">
+      <div class="tl-dot gold"></div>
+      <div class="tl-year">July 2025 – Present — Scale Operations</div>
+      <div class="tl-title">Data Analyst</div>
+      <div class="tl-sub">Merlin Brands · Full-Time</div>
+      <div class="tl-body">
+        Supervising live logistics performance setups inside <strong>Pyrops WMS</strong>. Coded an interactive stack <strong>Streamlit dashboard</strong> driven by PostgreSQL and predictive ML to monitor warehouse workflows. Executed layout <strong>Route Analysis</strong> and programmatic <strong>ABC/XYZ stock classification</strong> arrays.
+      </div>
+      <div class="tl-tags"><span class="tltag">Pyrops WMS</span><span class="tltag">Streamlit</span><span class="tltag">Python</span><span class="tltag">PostgreSQL</span><span class="tltag">ABC Optimization</span><span class="tltag">Route Graphs</span></div>
+    </div>
+  </div>
 
-    <section id="projects">
-        <div class="container">
-            <span class="sec-label">03 — PRODUCTION REPOSITORIES</span>
-            <h2 class="sec-title">Deployed Systems & Models</h2>
-            
-            <div class="projects-grid">
-                <div class="project-card">
-                    <div class="proj-top">
-                        <i class="fa-solid fa-microphone-lines folder-icon"></i>
-                        <div class="proj-links">
-                            <a href="https://github.com/ajnmoljain" target="_blank"><i class="fa-brands fa-github"></i></a>
-                        </div>
-                    </div>
-                    <h4>Speech-to-Text Recognition System</h4>
-                    <p>Designed a machine learning wrapper framework to convert noisy voice files into highly accurate structured textual data blocks.</p>
-                    <div class="tags-row"><span class="tag">Python</span><span class="tag">Deep Learning Core</span><span class="tag">Signal Processing</span></div>
-                </div>
+  <div class="stats-row">
+    <div class="stat-card rv"><span class="stat-val">40%</span><span class="stat-label">Manual Reporting Time Saved</span></div>
+    <div class="stat-card rv d1"><span class="stat-val">60%</span><span class="stat-label">Fulfillment Picking Time Reduced</span></div>
+    <div class="stat-card rv d2"><span class="stat-val">92%</span><span class="stat-label">NLP Classifier Accuracy</span></div>
+    <div class="stat-card rv d3"><span class="stat-val">30%</span><span class="stat-label">Planning Feasibility Errors Cleared</span></div>
+  </div>
+</section>
 
-                <div class="project-card">
-                    <div class="proj-top">
-                        <i class="fa-solid fa-eye folder-icon"></i>
-                        <div class="proj-links">
-                            <a href="https://github.com/ajnmoljain" target="_blank"><i class="fa-brands fa-github"></i></a>
-                        </div>
-                    </div>
-                    <h4>Real-Time Computer Vision Matrix</h4>
-                    <p>OpenCV image recognition pipeline configured to lock and track coordinates across active frames instantaneously.</p>
-                    <div class="tags-row"><span class="tag">OpenCV</span><span class="tag">Computer Vision</span><span class="tag">Matrix Processing</span></div>
-                </div>
+<section class="section" id="about">
+  <p class="stag rv">01 — Core Metrics</p>
+  <h2 class="shead rv">Proficiency Matrix</h2>
+  <div class="about-2col">
+    <div class="rv d1">
+      <p class="ap">I operate at the deployment gap between raw operational databases and machine learning workflows. My background inside warehouse floors allows me to build models rooted in physical business metrics, not just loose data assertions.</p>
+      <div class="edu-box">
+        <div class="edu-school">Doon Business School</div>
+        <div class="edu-deg">PGDM — Data Analytics (Major) &amp; Marketing (Minor)</div>
+        <span class="edu-yr">2023 – 2025</span>
+      </div>
+    </div>
+    <div class="sb-wrap rv d2">
+      <div class="sb-hd">Validated Competency Scores</div>
+      <div class="sbr"><div class="sbr-h"><span>SQL &amp; PostgreSQL Windows</span><span>90%</span></div><div class="sbr-track"><div class="sbr-fill" data-p="90"></div></div></div>
+      <div class="sbr"><div class="sbr-h"><span>Python Arrays (Pandas · NumPy)</span><span>85%</span></div><div class="sbr-track"><div class="sbr-fill" data-p="85"></div></div></div>
+      <div class="sbr"><div class="sbr-h"><span>Power BI Architecture / DAX</span><span>88%</span></div><div class="sbr-track"><div class="sbr-fill" data-p="88"></div></div></div>
+      <div class="sbr"><div class="sbr-h"><span>Streamlit Engine Builds</span><span>83%</span></div><div class="sbr-track"><div class="sbr-fill" data-p="83"></div></div></div>
+      <div class="sbr"><div class="sbr-h"><span>Predictive Machine Learning</span><span>77%</span></div><div class="sbr-track"><div class="sbr-fill" data-p="77"></div></div></div>
+      <div class="sbr"><div class="sbr-h"><span>Warehouse Graph Ops (Pyrops WMS)</span><span>82%</span></div><div class="sbr-track"><div class="sbr-fill" data-p="82"></div></div></div>
+    </div>
+  </div>
+</section>
 
-                <div class="project-card">
-                    <div class="proj-top">
-                        <i class="fa-solid fa-spider folder-icon"></i>
-                        <div class="proj-links">
-                            <a href="https://github.com/ajnmoljain" target="_blank"><i class="fa-brands fa-github"></i></a>
-                        </div>
-                    </div>
-                    <h4>Automated Web Scraping Cluster</h4>
-                    <p>Production cluster engineered to ingest highly dimensional marketplace values, clean inconsistencies, and perform robust statistical analysis.</p>
-                    <div class="tags-row"><span class="tag">Data Ingestion</span><span class="tag">Python</span><span class="tag">EDA Automation</span></div>
-                </div>
-            </div>
-        </div>
-    </section>
+<section class="section" id="wh-section">
+  <p class="stag rv">02 — Execution Infrastructure</p>
+  <h2 class="shead rv">Live Warehouse<br>Telemetry Optimization</h2>
+  <div id="wh-stage" class="rv d1">
+    <div class="wh-top">
+      <h3>WMS Grid Simulator (Merlin Brands Tracker)</h3>
+      <div class="wh-legend">
+        <div class="whl"><div class="whl-dot" style="background:#3dffa0"></div>GRN Intake</div>
+        <div class="whl"><div class="whl-dot" style="background:#e8c96a"></div>Zone A (Fast)</div>
+        <div class="whl"><div class="whl-dot" style="background:#00e5ff"></div>Zone B</div>
+        <div class="whl"><div class="whl-dot" style="background:#a06aff"></div>Zone C</div>
+        <div class="whl"><div class="whl-dot" style="background:#ff6a9a"></div>Dispatch</div>
+        <div class="whl"><div class="whl-dot" style="background:#ffcc44"></div>Active Route</div>
+      </div>
+    </div>
+    <canvas id="wh-canvas"></canvas>
+    <div class="wh-metrics">
+      <div class="wh-m"><span class="mv">1,248</span><span class="ml">Active SKU Array</span></div>
+      <div class="wh-m"><span class="mv">98.4%</span><span class="ml">Putaway Target Rate</span></div>
+      <div class="wh-m"><span class="mv">60%</span><span class="ml">Traversal Velocity Uplift</span></div>
+      <div class="wh-m"><span class="mv">ABC</span><span class="ml">Classification Grid</span></div>
+    </div>
+  </div>
+</section>
 
-    <footer>
-        <div class="container">
-            <h3 class="footer-title">Let's build optimized systems.</h3>
-            <div class="social-icons">
-                <a href="mailto:ajanmol22@gmail.com"><i class="fa-solid fa-envelope"></i></a>
-                <a href="https://github.com/ajnmoljain" target="_blank"><i class="fa-brands fa-github"></i></a>
-                <a href="#" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
-            </div>
-            <p class="copy">Designed & Maintained by Anmol Jain · © 2026</p>
-        </div>
-    </footer>
+<section class="section" id="ml-section">
+  <p class="stag rv">03 — Algorithmic Models</p>
+  <h2 class="shead rv">Data Science Sandbox</h2>
 
-    <script>
-        // Interactive Playground Data Switcher
-        const tabData = {
-            wms: `
-                <div class="interactive-box">
-                    <p style="color:var(--brand); font-weight:bold">> RUNNING WMS ROUTING METRICS:</p>
-                    <p style="margin-top:0.5rem; color:var(--text-muted)">Real-time layout simulation variables mapped over physical shelf coordinates.</p>
-                    <div class="matrix-container">
-                        <div class="matrix-cell">Zone Bottlenecks Cleared<span>99.1%</span></div>
-                        <div class="matrix-cell">ABC/XYZ Target Sync<span>Active</span></div>
-                    </div>
-                </div>`,
-            regression: `
-                <div class="interactive-box">
-                    <p style="color:var(--brand); font-weight:bold">> GRADIENT DESCENT & HYPER-PARAMETER SPACE:</p>
-                    <p style="margin-top:0.5rem; color:var(--text-muted)">Tracking prediction loss minimization arrays across continuous and discrete steps.</p>
-                    <div class="matrix-container">
-                        <div class="matrix-cell">Regression R² Score<span>0.892</span></div>
-                        <div class="matrix-cell">Logarithmic Loss Limit<span>0.114</span></div>
-                    </div>
-                </div>`,
-            validation: `
-                <div class="interactive-box">
-                    <p style="color:var(--brand); font-weight:bold">> K-FOLD CROSS VALIDATION STRATEGY:</p>
-                    <p style="margin-top:0.5rem; color:var(--text-muted)">Testing pipeline variance configurations to prevent overfitting patterns.</p>
-                    <div class="matrix-container">
-                        <div class="matrix-cell">Mean Stratified Accuracy<span>94.6%</span></div>
-                        <div class="matrix-cell">Standard Deviation Delta<span>±0.012</span></div>
-                    </div>
-                </div>`
-        };
+  <div id="playground" class="rv">
+    <div class="pg-head">
+      <div class="pg-title">Production Model Testing Canvas</div>
+      <div class="pg-tabs">
+        <button class="pgtab on" data-v="regression">Regression Engine</button>
+        <button class="pgtab" data-v="crossval">K-Fold Loops</button>
+        <button class="pgtab" data-v="ensemble">Ensemble Voting</button>
+        <button class="pgtab" data-v="evalmatrix">Evaluation Metrics</button>
+      </div>
+    </div>
+    <canvas id="pg-canvas"></canvas>
+    <div class="pg-caption" id="pg-cap">Linear Regression Continuous Target Validation: R²=0.87, RMSE=0.12</div>
+  </div>
 
-        function switchTab(tabKey) {
-            document.querySelectorAll('.pg-tab-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            document.getElementById('pg-content').innerHTML = tabData[tabKey];
-        }
+  <div class="ml-grid">
+    <div class="ml-card rv">
+      <span class="ml-icon">🔁</span>
+      <div class="ml-title">K-Fold Cross-Validation</div>
+      <div class="ml-body">Splitting dimensional time-series data chunks safely into k=5 separate validation folds to protect algorithms against structural overfitting loops.</div>
+      <div class="kfold">
+        <div class="krow"><div class="kc kt"></div><div class="kc ktr"></div><div class="kc ktr"></div><div class="kc ktr"></div><div class="kc ktr"></div></div>
+        <div class="krow"><div class="kc ktr"></div><div class="kc kt"></div><div class="kc ktr"></div><div class="kc ktr"></div><div class="kc ktr"></div></div>
+        <div class="krow"><div class="kc ktr"></div><div class="kc ktr"></div><div class="kc kt"></div><div class="kc ktr"></div><div class="kc ktr"></div></div>
+      </div>
+    </div>
 
-        // Terminal Live Logger Simulator
-        const logBox = document.getElementById('log-box');
-        const logs = [
-            "> Pulling live matrix data from putaway blocks...",
-            "> Compiling graph shortest-path routing optimization matrices...",
-            "> System Check: F1-Score validated at 92.0% evaluation criteria.",
-            "> Ingesting SQL window frame data transforms into local dashboard array...",
-            "> Execution stack cleared. All WMS units responsive."
-        ];
-        let logIndex = 0;
-        setInterval(() => {
-            logBox.innerHTML += `<br> ${logs[logIndex % logs.length]}`;
-            logIndex++;
-            logBox.scrollTop = logBox.scrollHeight;
-        }, 4000);
+    <div class="ml-card rv d1">
+      <span class="ml-icon">🌲</span>
+      <div class="ml-title">Ensemble Processing Architecture</div>
+      <div class="ml-body">Fusing target predictions from distinct Logistic Regression, Decision Tree, and SVM matrices to decrease absolute variance parameters.</div>
+      <div class="ens-bars">
+        <div class="ens-row"><span class="ens-name">Log.Reg</span><div class="ens-track"><div class="ens-fill" style="width:84%"></div></div><span class="ens-val">84%</span></div>
+        <div class="ens-row"><span class="ens-name">SVM Engine</span><div class="ens-track"><div class="ens-fill" style="width:86%"></div></div><span class="ens-val">86%</span></div>
+        <div class="ens-row"><span class="ens-name">Voting</span><div class="ens-track"><div class="ens-fill" style="width:92%;background:var(--brand)"></div></div><span class="ens-val" style="color:var(--brand)">92%</span></div>
+      </div>
+    </div>
 
-        // Three.js Network Structure Background Graph Setup
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.getElementById('bg-canvas').appendChild(renderer.domElement);
+    <div class="ml-card rv d2">
+      <span class="ml-icon">📐</span>
+      <div class="ml-title">Confusion Assessment Matrix</div>
+      <div class="ml-body">Evaluating model deployments beyond elementary accuracy parameters via detailed checking over target Precision, Recall, and F1 loops.</div>
+      <div class="cm">
+        <div class="cm-c tp">89<small>TP</small></div>
+        <div class="cm-c fp">4<small>FP</small></div>
+        <div class="cm-c fn">7<small>FN</small></div>
+        <div class="cm-c tn">94<small>TN</small></div>
+      </div>
+      <div class="cm-lbl">Precision Array: 95.7% · Recall Target: 92.7% · F1: 94.2%</div>
+    </div>
+  </div>
+</section>
 
-        const nodeGeo = new THREE.SphereGeometry(0.4, 8, 8);
-        const nodeMat = new THREE.MeshBasicMaterial({ color: 0x00e5ff });
-        const networkGroup = new THREE.Group();
-        const coords = [];
+<section class="section" id="projects">
+  <p class="stag rv">04 — Verified Repositories</p>
+  <h2 class="shead rv">Production Builds</h2>
+  <div class="proj-grid">
+    <div class="pcard rv">
+      <div class="pcard-num">01</div>
+      <div class="pcard-title">Streamlit Operations Hub Dashboard</div>
+      <div class="pcard-desc">Full-stack internal data dashboard engine linked to live PostgreSQL tables and Python forecasting scripts, replacing legacy manual spreadsheets.</div>
+      <div class="pcard-impact">40% Automated Processing Time Reduction</div>
+      <div class="ptags"><span class="ptag">Streamlit</span><span class="ptag">Python</span><span class="ptag">PostgreSQL</span><span class="ptag">Predictive ML</span></div>
+    </div>
+    <div class="pcard rv d1">
+      <div class="pcard-num">02</div>
+      <div class="pcard-title">Speech-to-Text Recognition Model</div>
+      <div class="pcard-desc">Advanced audio signal mining framework utilizing deep machine learning blocks to map unorganized speech voice pools into text files.</div>
+      <div class="pcard-impact">Audio Data Processing Pipeline Deployed</div>
+      <div class="ptags"><span class="ptag">Python</span><span class="ptag">Deep Learning Wrappers</span><span class="tltag">Audio Signal Core</span></div>
+    </div>
+    <div class="pcard rv d2">
+      <div class="pcard-num">03</div>
+      <div class="pcard-title">Real-Time Computer Vision Matrix</div>
+      <div class="pcard-desc">Image processing tracking array using OpenCV architectures to extract, process, and lock specific target coordinates frame-by-frame.</div>
+      <div class="pcard-impact">Continuous Frame Tracking Array Complete</div>
+      <div class="ptags"><span class="ptag">OpenCV</span><span class="ptag">Python Core</span><span class="ptag">Matrix Processing</span></div>
+    </div>
+  </div>
+</section>
 
-        for(let i=0; i<60; i++) {
-            const mesh = new THREE.Mesh(nodeGeo, nodeMat);
-            const x = (Math.random() - 0.5) * 100;
-            const y = (Math.random() - 0.5) * 100;
-            const z = (Math.random() - 0.5) * 60;
-            mesh.position.set(x, y, z);
-            networkGroup.add(mesh);
-            coords.push(new THREE.Vector3(x, y, z));
-        }
-        scene.add(networkGroup);
+<section class="section" id="contact" style="padding-bottom:10rem">
+  <div class="cbox rv">
+    <div class="ch">Let's solve scaled<br><em>analytical</em> tasks.</div>
+    <span class="csub">Targeting Data Analyst · ML Analyst · Junior Data Scientist transitions.</span>
+    <div class="clinks">
+      <a class="clink" href="mailto:ajanmol22@gmail.com">ajanmol22@gmail.com</a>
+      <a class="clink" href="https://www.linkedin.com/in/anmol-jain-b00417246/" target="_blank">LinkedIn Profile</a>
+      <a class="clink" href="https://github.com/ajnmoljain" target="_blank">GitHub Repo</a>
+    </div>
+  </div>
+</section>
 
-        const lineMat = new THREE.LineBasicMaterial({ color: 0x1f1f38, transparent: true, opacity: 0.5 });
-        for(let i=0; i<60; i++) {
-            for(let j=i+1; j<60; j++) {
-                if(coords[i].distanceTo(coords[j]) < 22) {
-                    const geo = new THREE.BufferGeometry().setFromPoints([coords[i], coords[j]]);
-                    const line = new THREE.Line(geo, lineMat);
-                    scene.add(line);
-                }
-            }
-        }
+<footer>Engineered by Anmol Jain · Production Data Architecture Systems Verified · © 2026</footer>
 
-        camera.position.z = 50;
+<script>
+/* INTERACTIVE TELEMETRY POINTER TRACKERS */
+const cur=document.getElementById('cur'),cur2=document.getElementById('cur2');
+let mx=0,my=0,r2x=0,r2y=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+(function lag(){r2x+=(mx-r2x)*.15;r2y+=(my-r2y)*.15;cur2.style.left=r2x+'px';cur2.style.top=r2y+'px';requestAnimationFrame(lag)})();
 
-        function animate() {
-            requestAnimationFrame(animate);
-            networkGroup.rotation.y += 0.001;
-            networkGroup.rotation.x += 0.0005;
-            renderer.render(scene, camera);
-        }
-        animate();
+window.addEventListener('load',()=>{
+  setTimeout(()=>document.getElementById('loader').classList.add('out'),1500);
+});
 
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
-    </script>
+/* BACKGROUND 3D SYSTEM GRAPH GENERATOR */
+(function(){
+  if(!window.THREE)return;
+  const canvas=document.getElementById('three-canvas');
+  const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  const scene=new THREE.Scene();
+  const camera=new THREE.PerspectiveCamera(70,innerWidth/innerHeight,0.1,100);
+  camera.position.z=3.5;
+  
+  function resize(){renderer.setSize(innerWidth,innerHeight);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix()}
+  resize();window.addEventListener('resize',resize);
+
+  const ptGeo=new THREE.BufferGeometry();
+  const ptCount=90;
+  const positions=new Float32Array(ptCount*3);
+  for(let i=0;i<ptCount;i++){
+    positions[i*3]=(Math.random()-0.5)*6;
+    positions[i*3+1]=(Math.random()-0.5)*4;
+    positions[i*3+2]=(Math.random()-0.5)*3;
+  }
+  ptGeo.setAttribute('position',new THREE.BufferAttribute(positions,3));
+  const ptMat=new THREE.PointsMaterial({size:.04,color:0x00e5ff,transparent:true,opacity:0.6});
+  const points=new THREE.Points(ptGeo,ptMat);
+  scene.add(points);
+
+  const linePositions=[];
+  for(let i=0;i<ptCount;i++){
+    for(let j=i+1;j<ptCount;j++){
+      const dx=positions[i*3]-positions[j*3];
+      const dy=positions[i*3+1]-positions[j*3+1];
+      const dz=positions[i*3+2]-positions[j*3+2];
+      const dist=Math.sqrt(dx*dx+dy*dy+dz*dz);
+      if(dist<0.95){
+        linePositions.push(positions[i*3],positions[i*3+1],positions[i*3+2]);
+        linePositions.push(positions[j*3],positions[j*3+1],positions[j*3+2]);
+      }
+    }
+  }
+  const lineGeo=new THREE.BufferGeometry();
+  lineGeo.setAttribute('position',new THREE.BufferAttribute(new Float32Array(linePositions),3));
+  const lines=new THREE.LineSegments(lineGeo,new THREE.LineBasicMaterial({color:0xccff00,transparent:true,opacity:0.06}));
+  scene.add(lines);
+
+  let mouseX=0,mouseY=0;
+  document.addEventListener('mousemove',e=>{mouseX=(e.clientX/innerWidth-0.5)*0.3;mouseY=(e.clientY/innerHeight-0.5)*0.3});
+
+  (function animate(){
+    requestAnimationFrame(animate);
+    points.rotation.y+=.0008;lines.rotation.y+=.0008;
+    points.position.x+=(mouseX-points.position.x)*0.05;
+    points.position.y+=(-mouseY-points.position.y)*0.05;
+    lines.position.x=points.position.x;lines.position.y=points.position.y;
+    renderer.render(scene,camera);
+  })();
+})();
+
+/* SEAMLESS SCROLL VISIBILITY REVEAL OBSERVERS */
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('v')})},{threshold:.05});
+document.querySelectorAll('.rv,.stag,.shead,.tl-item,.stat-card,.ml-card,.pcard,.skcard,.tip,.cbox,#playground,.sb-wrap').forEach(el=>obs.observe(el));
+
+const sbObs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.querySelectorAll('.sbr-fill').forEach(b=>{b.style.width=b.dataset.p+'%'})})},{threshold:.1});
+document.querySelectorAll('.sb-wrap').forEach(el=>sbObs.observe(el));
+
+/* LIVE DYNAMIC LOGISTICAL PATH OPTIMIZATION GRAPHS */
+(function(){
+  const canvas=document.getElementById('wh-canvas');
+  const ctx=canvas.getContext('2d');
+  let W=0,H=350,hovZ=null;
+
+  const zones=[
+    {id:'recv',lbl:'GRN / Intake Portal',x:.02,y:.05,w:.15,h:.4,col:'rgba(61,255,160,0.06)',bdr:'#3dffa0'},
+    {id:'a',lbl:'WMS Matrix A (Fast Velocity)',x:.20,y:.05,w:.22,h:.55,col:'rgba(204,255,0,0.05)',bdr:'#ccff00'},
+    {id:'b',lbl:'WMS Matrix B Cluster',x:.45,y:.05,w:.20,h:.55,col:'rgba(0,229,255,0.04)',bdr:'#00e5ff'},
+    {id:'c',lbl:'WMS Matrix C Array',x:.68,y:.05,w:.16,h:.55,col:'rgba(160,106,255,0.04)',bdr:'#a06aff'},
+    {id:'dispatch',lbl:'Active Dispatch Routing',x:.86,y:.05,w:.12,h:.4,col:'rgba(255,106,154,0.06)',bdr:'#ff6a9a'},
+    {id:'staging',lbl:'Putaway Processing Buffers',x:.02,y:.52,w:.15,h:.25,col:'rgba(0,229,255,0.02)',bdr:'rgba(0,229,255,0.3)'}
+  ];
+
+  const particles=Array.from({length:6},(_,i)=>({t:i/6,speed:0.003}));
+  const waypoints=[{x:.09,y:.25},{x:.09,y:.62},{x:.31,y:.32},{x:.55,y:.32},{x:.76,y:.32},{x:.92,y:.25}];
+
+  function positionInterpolation(t){
+    const segments=waypoints.length-1;
+    const progress=t*segments;
+    const current=Math.floor(progress);
+    const delta=progress-current;
+    if(current>=segments)return waypoints[segments];
+    const pA=waypoints[current],pB=waypoints[current+1];
+    return {x:pA.x+(pB.x-pA.x)*delta,y:pA.y+(pB.y-pA.y)*delta};
+  }
+
+  function resize(){W=canvas.parentElement.clientWidth-40;canvas.width=W;canvas.height=H}
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='#020208';ctx.fillRect(0,0,W,H);
+
+    ctx.strokeStyle='rgba(0,229,255,0.015)';ctx.lineWidth=1;
+    for(let x=0;x<W;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke()}
+    for(let y=0;y<H;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}
+
+    zones.forEach(z=>{
+      const zx=z.x*W,zy=z.y*H,zw=z.w*W,zh=z.h*H;
+      const hoverActive=hovZ===z.id;
+      ctx.fillStyle=hoverActive?z.col.replace(/[\d.]+\)$/,'0.15)'):z.col;
+      ctx.strokeStyle=z.bdr;ctx.lineWidth=hoverActive?1.2:0.7;
+      ctx.beginPath();if(ctx.roundRect)ctx.roundRect(zx,zy,zw,zh,4);else ctx.rect(zx,zy,zw,zh);ctx.fill();ctx.stroke();
+      ctx.fillStyle=hoverActive?'#ffffff':'#a0a0d0';
+      ctx.font=`${hoverActive?'700':'600'} 10px Inter`;ctx.textAlign='center';
+      ctx.fillText(z.lbl,zx+zw/2,zy+16);
+    });
+
+    ctx.beginPath();ctx.moveTo(waypoints[0].x*W,waypoints[0].y*H);
+    for(let i=1;i<waypoints.length;i++)ctx.lineTo(waypoints[i].x*W,waypoints[i].y*H);
+    ctx.strokeStyle='rgba(204,255,0,0.15)';ctx.lineWidth=1.2;ctx.setLineDash([4,4]);ctx.stroke();ctx.setLineDash([]);
+
+    particles.forEach(p=>{
+      p.t=(p.t+p.speed)%1;
+      const dynamicCoord=positionInterpolation(p.t);
+      ctx.beginPath();ctx.arc(dynamicCoord.x*W,dynamicCoord.y*H,3,0,Math.PI*2);ctx.fillStyle=var(--brand);ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+
+  canvas.addEventListener('mousemove',e=>{
+    const r=canvas.getBoundingClientRect(),px=(e.clientX-r.left)/W,py=(e.clientY-r.top)/H;
+    hovZ=null;zones.forEach(z=>{if(px>=z.x&&px<=z.x+z.w&&py>=z.y&&py<=z.y+z.h)hovZ=z.id});
+  });
+  canvas.addEventListener('mouseleave',()=>hovZ=null);
+  
+  resize();draw();
+  window.addEventListener('resize',resize);
+})();
+
+/* QUANTITATIVE MODEL SIMULATION SANDBOX EXECUTION HOOKS */
+(function(){
+  const canvas=document.getElementById('pg-canvas');
+  const ctx=canvas.getContext('2d');
+  const caption=document.getElementById('pg-cap');
+  let activeTab='regression',progressDelta=0,animationFrameId=null;
+  
+  const CAPTIONS={
+    regression:'Linear Regression Continuous Target Validation: R²=0.87, RMSE=0.12',
+    crossval:'5-Fold Cross-Validation Matrix Loop: Mean Stratified Accuracy: 91.4%',
+    ensemble:'Multi-Estimator Ensemble Pipeline (Consensus Voting Architecture)',
+    evalmatrix:'Deployment Verification Framework: Precision/Recall Vector Arrays'
+  };
+
+  function resize(){canvas.width=canvas.parentElement.clientWidth;canvas.height=250}
+  resize();window.addEventListener('resize',()=>{resize();progressDelta=0});
+
+  function renderGrid(W,H){
+    ctx.strokeStyle='rgba(255,255,255,.02)';ctx.lineWidth=1;
+    for(let i=0;i<=4;i++){const y=H*.8-i*(H*.65/4);ctx.beginPath();ctx.moveTo(W*.06,y);ctx.lineTo(W*.94,y);ctx.stroke()}
+  }
+
+  const matrices={
+    regression(W,H,t){
+      ctx.clearRect(0,0,W,H);renderGrid(W,H);
+      const randomSplines=Array.from({length:40},(_,i)=>{const x=i/39;return{x,y:x*.68+.15+(Math.sin(i*2.5)*.03)+(Math.cos(i*1.9)*.02)}});
+      randomSplines.forEach((p,i)=>{
+        if(i/randomSplines.length>t)return;
+        ctx.beginPath();ctx.arc(p.x*(W*.85)+W*.06,H*.8-p.y*(H*.65),3.5,0,Math.PI*2);
+        ctx.fillStyle='rgba(160,106,255,0.8)';ctx.fill();
+      });
+      ctx.beginPath();ctx.moveTo(W*.06,H*.8-.15*(H*.65));ctx.lineTo(W*.91,H*.8-.83*(H*.65));
+      ctx.strokeStyle='var(--brand)';ctx.lineWidth=2;ctx.stroke();
+    },
+    crossval(W,H,t){
+      ctx.clearRect(0,0,W,H);renderGrid(W,H);
+      const performanceFolds=[.912,.896,.921,.908,.934];
+      const columnWidth=(W*.75)/5;
+      performanceFolds.forEach((v,i)=>{
+        const x=W*.08+i*(columnWidth+12);
+        const barHeight=Math.min(t*(i*.3+1),1)*v*(H*.65);
+        const highlighted=(Math.floor(t*8)%5)===i;
+        ctx.fillStyle=highlighted?'var(--brand)':'rgba(0,229,255,0.3)';
+        ctx.fillRect(x,H*.8-barHeight,columnWidth,barHeight);
+        ctx.fillStyle='#ffffff';ctx.font='10px monospace';ctx.textAlign='center';
+        ctx.fillText((v*100).toFixed(1)+'%',x+columnWidth/2,H*.8-barHeight-5);
+      });
+    },
+    ensemble(W,H,t){
+      ctx.clearRect(0,0,W,H);renderGrid(W,H);
+      const vectors=[{n:'LogReg',a:.84},{n:'DecisionTree',a:.81},{n:'SVM Matrix',a:.86},{n:'Ensemble Voting',a:.92}];
+      const columnWidth=(W*.75)/vectors.length;
+      vectors.forEach((m,i)=>{
+        const x=W*.1+i*(columnWidth+15);
+        const barHeight=Math.min(t*(i*.2+1),1)*m.a*(H*.65);
+        ctx.fillStyle=m.n.includes('Voting')?'var(--brand)':'rgba(160,106,255,0.4)';
+        ctx.fillRect(x,H*.8-barHeight,columnWidth,barHeight);
+        ctx.fillStyle='#ffffff';ctx.font='9px monospace';ctx.textAlign='center';
+        ctx.fillText(m.n,x+columnWidth/2,H*.9);
+      });
+    },
+    evalmatrix(W,H,t){
+      ctx.clearRect(0,0,W,H);
+      const validationScores=[{n:'Precision Tensor',v:.957},{n:'Recall Vector',v:.927},{n:'F1 Consensus',v:.942}];
+      validationScores.forEach((m,i)=>{
+        const y=H*.15+i*(H*.65/validationScores.length);
+        const horizontalFill=Math.min(t*(i*.15+1),1)*m.v*(W*.55);
+        ctx.fillStyle='rgba(255,255,255,.02)';ctx.fillRect(W*.25,y,W*.55,16);
+        ctx.fillStyle='var(--neon-blue)';ctx.fillRect(W*.25,y,horizontalFill,16);
+        ctx.fillStyle='#ffffff';ctx.font='10px monospace';ctx.textAlign='right';
+        ctx.fillText(m.n,W*.23,y+12);
+      });
+    }
+  };
+
+  function executionLoop(){
+    progressDelta=Math.min(progressDelta+.012,1);
+    matrices[activeTab](canvas.width,canvas.height,progressDelta);
+    if(progressDelta<1)animationFrameId=requestAnimationFrame(executionLoop);
+    else setTimeout(()=>{progressDelta=0;executionLoop()},3500);
+  }
+  executionLoop();
+
+  document.querySelectorAll('.pgtab').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('.pgtab').forEach(b=>b.classList.remove('on'));
+      btn.classList.add('on');
+      activeTab=btn.dataset.v;caption.textContent=CAPTIONS[activeTab];
+      if(animationFrameId)cancelAnimationFrame(animationFrameId);
+      progressDelta=0;executionLoop();
+    });
+  });
+})();
+</script>
 </body>
 </html>
